@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.1"
+   id="downloadSvg"
+   x="0px"
+   y="0px"
+   viewBox="0 0 1200 1200"
+   enable-background="new 0 0 1200 1200"
+   xml:space="preserve"
+   height="256"
+   width="256"
+   sodipodi:docname="Flat Design Trees Master 24a1.svg"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"><metadata
+   id="metadata5489"><rdf:RDF><cc:Work
+       rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><defs
+   id="defs5487" /><sodipodi:namedview
+   pagecolor="#ffffff"
+   bordercolor="#666666"
+   borderopacity="1"
+   objecttolerance="10"
+   gridtolerance="10"
+   guidetolerance="10"
+   inkscape:pageopacity="0"
+   inkscape:pageshadow="2"
+   inkscape:window-width="1920"
+   inkscape:window-height="1001"
+   id="namedview5485"
+   showgrid="false"
+   inkscape:zoom="0.921875"
+   inkscape:cx="128"
+   inkscape:cy="128"
+   inkscape:window-x="-9"
+   inkscape:window-y="-9"
+   inkscape:window-maximized="1"
+   inkscape:current-layer="g5482" />
+<g
+   id="g5482">
+	<path
+   d="m 599.061,1133.797 h -40.849 v -128.956 c 13.662,1.176 27.313,1.993 40.849,2.484 z"
+   id="path5474"
+   inkscape:connector-curvature="0"
+   style="fill:#79532b" />
+	<path
+   d="m 628.085,1007.886 c 5.701,0 11.407,-0.035 17.111,-0.1 v 126.011 h -46.135 v -126.472 c 9.752,0.355 19.447,0.554 29.024,0.561 z"
+   id="path5476"
+   inkscape:connector-curvature="0"
+   style="fill:#ad6630" />
+	<path
+   d="m 398.907,356.088 c 6.315,-2.331 12.736,-4.128 19.215,-5.583 28.453,-166.977 95.611,-284.302 173.934,-284.302 2.347,0 4.679,0.142 7.005,0.351 v 924.195 21.203 c -13.536,-1.406 -27.187,-3.743 -40.849,-7.11 C 458.419,980.254 358.546,902.677 306.449,761.568 239.814,581.081 281.209,399.542 398.907,356.088 Z"
+   style="display:inline;fill:#cf211b;fill-opacity:1"
+   id="path5478"
+   inkscape:connector-curvature="0" />
+	<path
+   d="m 780.528,529.005 c 0,2.731 -0.023,5.45 -0.042,8.171 1.455,0.493 2.918,0.924 4.368,1.452 115.579,42.104 170.921,181.519 123.61,311.392 -43.112,118.348 -152.68,159.682 -263.268,163.247 -5.704,0.184 -11.41,0.297 -17.111,0.285 -9.577,-0.02 -19.272,-0.588 -29.024,-1.601 V 990.748 66.553 c 100.843,9.052 181.467,212.615 181.467,462.452 z"
+   style="fill:#cf211b;fill-opacity:1"
+   id="path5480"
+   inkscape:connector-curvature="0" />
+</g>
+</svg>

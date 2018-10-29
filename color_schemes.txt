@@ -1,0 +1,6 @@
+# Color Scheme Name,Variation Letter,Color A,Color B,Color C
+Temperate,a,c9c832,a2a552,7f8534
+Temperate,b,aec9b3,48a16f,287359
+Cold,a,f7f9fb,c2dbdf,71a2a6
+Cold,b,8dfdff,48b8ba,07909f
+Autumn,a,f48b53,f9c00f,ae1543
