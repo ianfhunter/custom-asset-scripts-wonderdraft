@@ -2,6 +2,11 @@ import json
 import os
 import platform
 import re
+import glob
+
+from svglib.svglib import svg2rlg
+from reportlab.graphics import renderPDF, renderPM
+
 
 if platform.system() == 'Windows':
   import subprocess
@@ -34,11 +39,11 @@ while mode_input != 's' and mode_input != 't':
   mode_input = input('Operate in (S)ymbol mode or (T)ree mode? ').lower()
 is_tree_mode = mode_input == 't'
 
-filenames = sorted([
-    fn
-    for fn in os.listdir(SVG_DIR)
-    if os.path.isfile(os.path.join(SVG_DIR, fn)) and '.svg' in fn
-])
+
+if (len(os.listdir(SVG_DIR)) == 0):
+    print(SVG_DIR + " folder that should contain SVGs is empty.")
+
+filenames = glob.glob(SVG_DIR + '/**/*.svg', recursive=True)
 
 if is_tree_mode:
   # Ensure the output directory exists
@@ -47,9 +52,14 @@ if is_tree_mode:
     os.mkdir(TREE_DIR)
 
   # Extract the tree design categories (e.g. 'Flat Design Trees Cold 12a')
-  categories = set(
-    [re.match(r'(Flat[ _]Design[ _]Trees[ _]\w+[ _]\d+\w)', s).group(1)
-      for s in filenames])
+#  categories = set(
+#    [re.match(r'(Flat[ _]Design[ _]Trees[ _]\w+[ _]\d+\w)', s).group(1)
+#      for s in filenames])
+
+
+  SVG_DIR = "./svg_output/"
+  categories = [name for name in os.listdir(SVG_DIR) if os.path.isdir(SVG_DIR+name)]
+#  categories = 
   
   # Create a new directory for each category; each directory becomes a tree
   # symbol entry in Wonderdraft
@@ -62,9 +72,11 @@ if is_tree_mode:
     # Determine which SVg files belong to this category
     cat_fns = [fn for fn in filenames if category in fn]
     for fn in cat_fns:
+      print(fn)    
+      file_name = fn.split("/")[-1]
       convert(
-        os.path.join(SVG_DIR, fn),
-        os.path.join(TREE_DIR, category, fn.replace('svg', 'png'))
+        os.path.join(fn),
+        os.path.join(TREE_DIR, category, file_name.replace('svg', 'png'))
       )
 
 else:
@@ -72,10 +84,15 @@ else:
   if not (os.path.exists(SYMBOL_DIR) and os.path.isdir(SYMBOL_DIR)):
     print(f'Making directory {os.path.join(SYMBOL_DIR)}')
     os.mkdir(SYMBOL_DIR)
+  else:
+    print(SYMBOL_DIR, " does not exist or is not a directory.")
   
   # Just create all the files in the one directory
   for fn in filenames:
+    print(fn)
+    file_name = fn.split("/")[-1]
+
     convert(
-        os.path.join(SVG_DIR, fn),
-        os.path.join(SYMBOL_DIR, fn.replace('svg', 'png'))
+        fn,
+        os.path.join(SYMBOL_DIR, file_name.replace('svg', 'png'))
     )
