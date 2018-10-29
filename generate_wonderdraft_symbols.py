@@ -4,10 +4,6 @@ import platform
 import re
 import glob
 
-from svglib.svglib import svg2rlg
-from reportlab.graphics import renderPDF, renderPM
-
-
 if platform.system() == 'Windows':
   import subprocess
 else:
