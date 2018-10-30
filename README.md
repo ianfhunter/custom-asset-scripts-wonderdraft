@@ -1,4 +1,4 @@
-# custom-asset-scripts-wonderdraft
+# Accelerated Assets for Wonderdraft
 Scripts to accelerate Asset creation for the map making tool Wonderdraft
 
 Two scripts currently exist:
