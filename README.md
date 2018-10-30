@@ -9,6 +9,7 @@ This script generates different SVGs based on an original and some given color s
 Outputs in 'svg_output'
 
 Tip: Define your own Custom color schemes in color_schemes.txt
+Colors must be defined using Hexadecimal Format.
 
 #### Generate WonderDraft Symbols
 
