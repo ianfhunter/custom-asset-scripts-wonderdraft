@@ -4,8 +4,13 @@ import platform
 import re
 import glob
 
+OVERRIDE_USE_SVGLIB = False
+
 if platform.system() == 'Windows':
   import subprocess
+  if OVERRIDE_USE_SVGLIB:
+    from svglib.svglib import svg2rlg
+    from reportlab.graphics import renderPDF, renderPM
 else:
   import cairosvg
 
@@ -15,15 +20,20 @@ SYMBOL_DIR = './symbols'
 TREE_DIR = './trees'
 
 
+
 def convert(svg_path, png_path):
   if platform.system() == 'Windows':
-    subprocess.run([
-      r'C:\Program Files\Inkscape\inkscape',
-      '-z',
-      svg_path,
-      '-e',
-      png_path
-    ])
+    if OVERRIDE_USE_SVGLIB:
+        drawing = svg2rlg(svg_path)
+        renderPM.drawToFile(drawing, png_path, fmt="PNG")
+    else:    
+        subprocess.run([
+          r'C:\Program Files\Inkscape\inkscape',
+          '-z',
+          svg_path,
+          '-e',
+          png_path
+        ])
   else:
     cairosvg.svg2png(url=svg_path, write_to=png_path)
 
