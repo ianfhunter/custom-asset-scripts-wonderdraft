@@ -4,13 +4,14 @@ import platform
 import re
 import glob
 
-OVERRIDE_USE_SVGLIB = False
+OVERRIDE_USE_SVGLIB = True
 
 if platform.system() == 'Windows':
   import subprocess
   if OVERRIDE_USE_SVGLIB:
     from svglib.svglib import svg2rlg
     from reportlab.graphics import renderPDF, renderPM
+  from pathlib import Path
 else:
   import cairosvg
 
@@ -20,8 +21,16 @@ SYMBOL_DIR = './symbols'
 TREE_DIR = './trees'
 
 
-
 def convert(svg_path, png_path):
+
+
+  if platform.system() == 'Windows':
+    #svg_path = "\"" + str(Path(svg_path)) + "\"" 
+    #png_path = "\"" + str(Path(png_path)) + "\"" 
+    png_path = str(Path(png_path)) 
+    svg_path = str(Path(svg_path)) 
+    print(svg_path, png_path)
+
   if platform.system() == 'Windows':
     if OVERRIDE_USE_SVGLIB:
         drawing = svg2rlg(svg_path)
@@ -79,7 +88,11 @@ if is_tree_mode:
     cat_fns = [fn for fn in filenames if category in fn]
     for fn in cat_fns:
       print(fn)    
-      file_name = fn.split("/")[-1]
+      if platform.system() == 'Windows':
+        file_name = fn.split("\\")[-1]
+      else:
+        file_name = fn.split("/")[-1]
+      print("FN: ", file_name)
       convert(
         os.path.join(fn),
         os.path.join(TREE_DIR, category, file_name.replace('svg', 'png'))
@@ -87,18 +100,26 @@ if is_tree_mode:
 
 else:
   # Ensure the output directory exists
-  if not (os.path.exists(SYMBOL_DIR) and os.path.isdir(SYMBOL_DIR)):
+  if (os.path.exists(SYMBOL_DIR) and os.path.isdir(SYMBOL_DIR)):
+    print(SYMBOL_DIR, " already exists.")
+  else:
     print(f'Making directory {os.path.join(SYMBOL_DIR)}')
     os.mkdir(SYMBOL_DIR)
-  else:
-    print(SYMBOL_DIR, " does not exist or is not a directory.")
   
   # Just create all the files in the one directory
   for fn in filenames:
-    print(fn)
-    file_name = fn.split("/")[-1]
+    
+    if platform.system() == 'Windows':
+        file_name = fn.split("\\")[-1]
+    else:
+        file_name = fn.split("/")[-1]
+    
+    svg_path = os.path.join(SVG_DIR, file_name)
+    png_path = os.path.join(SYMBOL_DIR, file_name.replace('svg', 'png'))
+    print("svg", svg_path)
+    print("png", png_path)
 
     convert(
-        fn,
-        os.path.join(SYMBOL_DIR, file_name.replace('svg', 'png'))
+        svg_path,
+        png_path
     )
