@@ -25,17 +25,17 @@ def convert(svg_path, png_path):
 
 
   if platform.system() == 'Windows':
-    #svg_path = "\"" + str(Path(svg_path)) + "\"" 
-    #png_path = "\"" + str(Path(png_path)) + "\"" 
-    png_path = str(Path(png_path)) 
-    svg_path = str(Path(svg_path)) 
+    #svg_path = "\"" + str(Path(svg_path)) + "\""
+    #png_path = "\"" + str(Path(png_path)) + "\""
+    png_path = str(Path(png_path))
+    svg_path = str(Path(svg_path))
     print(svg_path, png_path)
 
   if platform.system() == 'Windows':
     if OVERRIDE_USE_SVGLIB:
         drawing = svg2rlg(svg_path)
         renderPM.drawToFile(drawing, png_path, fmt="PNG")
-    else:    
+    else:
         subprocess.run([
           r'C:\Program Files\Inkscape\inkscape',
           '-z',
@@ -66,16 +66,9 @@ if is_tree_mode:
     print(f'Making directory {os.path.join(TREE_DIR)}')
     os.mkdir(TREE_DIR)
 
-  # Extract the tree design categories (e.g. 'Flat Design Trees Cold 12a')
-#  categories = set(
-#    [re.match(r'(Flat[ _]Design[ _]Trees[ _]\w+[ _]\d+\w)', s).group(1)
-#      for s in filenames])
-
-
   SVG_DIR = "./svg_output/"
   categories = [name for name in os.listdir(SVG_DIR) if os.path.isdir(SVG_DIR+name)]
-#  categories = 
-  
+
   # Create a new directory for each category; each directory becomes a tree
   # symbol entry in Wonderdraft
   for category in categories:
@@ -83,11 +76,11 @@ if is_tree_mode:
     if not os.path.exists(os.path.join(TREE_DIR, category)):
       print(f'Making directory {os.path.join(TREE_DIR, category)}')
       os.mkdir(os.path.join(TREE_DIR, category))
-    
+
     # Determine which SVg files belong to this category
     cat_fns = [fn for fn in filenames if category in fn]
     for fn in cat_fns:
-      print(fn)    
+      print(fn)
       if platform.system() == 'Windows':
         file_name = fn.split("\\")[-1]
       else:
@@ -105,21 +98,28 @@ else:
   else:
     print(f'Making directory {os.path.join(SYMBOL_DIR)}')
     os.mkdir(SYMBOL_DIR)
-  
-  # Just create all the files in the one directory
-  for fn in filenames:
-    
-    if platform.system() == 'Windows':
-        file_name = fn.split("\\")[-1]
-    else:
-        file_name = fn.split("/")[-1]
-    
-    svg_path = os.path.join(SVG_DIR, file_name)
-    png_path = os.path.join(SYMBOL_DIR, file_name.replace('svg', 'png'))
-    print("svg", svg_path)
-    print("png", png_path)
 
-    convert(
-        svg_path,
-        png_path
-    )
+
+  SVG_DIR = "./svg_output/"
+  categories = [name for name in os.listdir(SVG_DIR) if os.path.isdir(SVG_DIR+name)]
+
+  # Just create all the files in the one directory
+  for category in categories:
+
+    cat_fns = [fn for fn in filenames if category in fn]
+    for fn in cat_fns:
+
+      if platform.system() == 'Windows':
+          file_name = fn.split("\\")[-1]
+      else:
+          file_name = fn.split("/")[-1]
+
+      svg_path = os.path.join(fn)
+      png_path = os.path.join(SYMBOL_DIR, file_name.replace('svg', 'png'))
+      print("svg", svg_path)
+      print("png", png_path)
+
+      convert(
+          svg_path,
+          png_path
+      )
