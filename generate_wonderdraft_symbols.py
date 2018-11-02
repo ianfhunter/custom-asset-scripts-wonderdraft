@@ -7,11 +7,11 @@ from pathlib import Path
 from raster_engines import getEngine
 
 if platform.system() == 'Windows':
-    # RASTER_ENGINE = 'INKSCAPE'
-    RASTER_ENGINE = 'SVGLIB'
+    RASTER_ENGINE = 'INKSCAPE'  
+    RASTER_ENGINE = 'IMAGEMAGICK'  
+    RASTER_ENGINE = 'SVGLIB'        
 else:
-    RASTER_ENGINE = 'CAIRO'
-    RASTER_ENGINE = 'SVGLIB'
+    RASTER_ENGINE = 'CAIROSVG'
 
 
 engine = getEngine(RASTER_ENGINE)
@@ -21,12 +21,30 @@ SYMBOL_DIR = './symbols'
 TREE_DIR = './trees'
 
 
+import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument("-s", "--symbol", help="Symbol Mode", action="store_true")
+parser.add_argument("-t", "--tree", help="Tree Mode", action="store_true")
+args = parser.parse_args()
+
+
+
 # Prompt the user whether to generate symbols (all in one folder) or trees (each
 # style in its own folder for automatic variation)
-mode_input = 'foo'
+if args.symbol:
+    mode_input = 's'
+elif args.tree:
+    mode_input = 't'
+else:
+    mode_input = 'invalid'
+
 while mode_input != 's' and mode_input != 't':
     mode_input = input('Operate in (S)ymbol mode or (T)ree mode? ').lower()
-is_tree_mode = mode_input == 't'
+
+if mode_input == 't':
+    is_tree_mode = True
+else:
+    is_tree_mode = False
 
 
 if (len(os.listdir(SVG_DIR)) == 0):
@@ -55,12 +73,11 @@ if is_tree_mode:
         # Determine which SVg files belong to this category
         cat_fns = [fn for fn in filenames if category in fn]
         for fn in cat_fns:
-            print(fn)
+            # print(fn)
             if platform.system() == 'Windows':
                 file_name = fn.split("\\")[-1]
             else:
                 file_name = fn.split("/")[-1]
-            print("FN: ", file_name)
             engine.convert(
                 os.path.join(fn),
                 os.path.join(TREE_DIR, category,
@@ -93,8 +110,6 @@ else:
             svg_path = os.path.join(fn)
             png_path = os.path.join(
                 SYMBOL_DIR, file_name.replace('svg', 'png'))
-            print("svg", svg_path)
-            print("png", png_path)
 
             engine.convert(
                 svg_path,
