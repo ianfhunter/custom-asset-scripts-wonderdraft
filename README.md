@@ -20,8 +20,14 @@ Outputs in 'trees' or 'symbols' accordingly.
 
 #### Windows
 * Install Python3 (https://www.python.org/downloads/windows/)
-* Install svglib through pip3. 
-  * You will need to specify svglib==0.9.0b to get the right version
+
+You can install using requirements.txt and pip3
+
+For the imagemagick engine (windows), download here http://www.imagemagick.org/script/download.php#windows
+
+### Switching Render Engines
+change RENDER_ENGINE variable to the appropiate one
+you may also like to change PATH_TO_IMAGEMAGICK & PATH_TO_INKSCAPE if they do not match up.
 
 ### Performance
 
