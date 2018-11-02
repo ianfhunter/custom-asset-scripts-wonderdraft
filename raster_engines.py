@@ -109,7 +109,7 @@ class svglibRE(RasterEngine):
     def convert(self, svg_path, png_path):
         global engine_lib
         drawing = engine_lib[0](svg_path)
-        engine_lib[1].drawToFile(drawing, png_path, fmt="PNG", configPIL={'transparency':'white'})
+        engine_lib[1].drawToFile(drawing, png_path, fmt="PNG")
 
 
 class inkscapeRE(RasterEngine):
