@@ -38,6 +38,7 @@ Some performance numbers based on symbol mode.
 | Raster Engine | Sample Time |
 | ------------- | -------------: |
 | `CAIROSVG`  | 22s  |
+| `CAIRO + RSVG`  | TBD  |
 | `SVGLIB`  | 2m44s  |
 
 #### Windows
