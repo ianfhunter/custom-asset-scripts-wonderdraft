@@ -22,3 +22,22 @@ Outputs in 'trees' or 'symbols' accordingly.
 * Install Python3 (https://www.python.org/downloads/windows/)
 * Install svglib through pip3. 
   * You will need to specify svglib==0.9.0b to get the right version
+
+### Performance
+
+Some performance numbers based on symbol mode.
+
+#### Linux
+
+| Raster Engine | Sample Time |
+| ------------- | -------------: |
+| `CAIROSVG`  | 22s  |
+| `SVGLIB`  | 2m44s  |
+
+#### Windows
+
+| Raster Engine | Sample Time |
+| ------------- | -------------: |
+| `INKSCAPE`  | 12m19s  |
+| `IMAGEMAGICK`  | 1m28s  |
+| `SVGLIB`  | 1m50s  |
