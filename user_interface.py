@@ -10,6 +10,8 @@ def genWonderDraftUI():
         in one folder) ", action="store_true")
     parser.add_argument("-t", "--tree", help="generate trees (each \
         style in its own folder for automatic variation)", action="store_true")
+    parser.add_argument("-x", "--max-dim", help="limit the output dimensions to a specific size", default=-1, type=int)
+
     args = parser.parse_args()
 
     # User Prompt

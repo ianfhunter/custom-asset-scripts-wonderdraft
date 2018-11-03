@@ -20,7 +20,7 @@ else:
 
 args = genWonderDraftUI()
 
-engine = getEngine(RASTER_ENGINE)
+engine = getEngine(RASTER_ENGINE, args)
 
 createFolders()
 

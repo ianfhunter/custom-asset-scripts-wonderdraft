@@ -11,7 +11,7 @@ engine_lib = None
 PATH_TO_IMAGEMAGICK = r'C:\Program Files\ImageMagick-7.0.8-Q16\magick.exe'
 PATH_TO_INKSCAPE = r'C:\Program Files\Inkscape\inkscape.com'
 
-def getEngine(selection):
+def getEngine(selection, args):
     if selection == 'CAIRO':
         return cairoRE()
     if selection == 'CAIROSVG':
@@ -21,7 +21,7 @@ def getEngine(selection):
     if selection == 'SVGLIB':
         return svglibRE()
     if selection == 'IMAGEMAGICK':
-        return imageMagickRE()
+        return imageMagickRE(args.max_dim)
 
 
 class RasterEngine():
@@ -46,10 +46,11 @@ class cairoSVGRE(RasterEngine):
 
 
 class imageMagickRE(RasterEngine):
-    def __init__(self):
+    def __init__(self, max_dim):
       import subprocess as external
       global engine_lib
       engine_lib = external #Image
+      self.max_dim = str(max_dim)
 
     def convert(self, svg_path, png_path):
         global engine_lib
@@ -59,12 +60,22 @@ class imageMagickRE(RasterEngine):
             png_path = escape_path(png_path)
             svg_path = escape_path(svg_path)
 
-            proc = engine_lib.run([
-                PATH_TO_IMAGEMAGICK,
-                '-background','none',
-                svg_path,
-                png_path,
-            ])
+            if self.max_dim == -1:
+                proc = engine_lib.run([
+                    PATH_TO_IMAGEMAGICK,
+                    '-background', 'none',
+                    svg_path,
+                    png_path,
+                ])
+            else:
+                proc = engine_lib.run([
+                    PATH_TO_IMAGEMAGICK,
+                    '-background', 'none',
+                    '-resize', self.max_dim + 'x' + self.max_dim,
+                    svg_path,
+                    png_path,
+                ])
+
 
 # "C:\Program Files\ImageMagick-7.0.8-Q16\magick.exe" "C:\Users\Ian\Code\custom-asset-scripts-wonderdraft\svg_output\Flat Design Trees Master Autumn A\ Flat Design Trees Master Autumn A 1a1-1.svg" a.png
 
