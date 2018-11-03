@@ -53,7 +53,7 @@ class imageMagickRE(RasterEngine):
 
     def convert(self, svg_path, png_path):
         global engine_lib
-        
+
         super(imageMagickRE, self).convert(svg_path, png_path)
         if platform.system() == 'Windows':
             png_path = escape_path(png_path)
@@ -67,7 +67,7 @@ class imageMagickRE(RasterEngine):
             ])
 
 # "C:\Program Files\ImageMagick-7.0.8-Q16\magick.exe" "C:\Users\Ian\Code\custom-asset-scripts-wonderdraft\svg_output\Flat Design Trees Master Autumn A\ Flat Design Trees Master Autumn A 1a1-1.svg" a.png
-        
+
 class cairoRE(RasterEngine):
     def __init__(self):
         import cairo as cairo
@@ -130,6 +130,13 @@ class inkscapeRE(RasterEngine):
                 svg_path,
                 '--export-png='+png_path
             ])
+
+
+def splitPath(path):
+    if platform.system() == 'Windows':
+        return path.split("\\")[-1]
+    else:
+        return path.split("/")[-1]
 
 
 def escape_path(path):
