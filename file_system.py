@@ -1,5 +1,6 @@
 import os
 import glob
+import platform
 
 TEMPLATE_DIR = './templates'
 SVG_DIR = './svg_output'
@@ -25,15 +26,21 @@ def getAllFilesInDir(filetype, directory):
 
 
 def getFileName(path, no_ext=False):
-    a = path.split("/")[-1]
+    sep = file_seperator()
+    a = path.split(sep)[-1]
     if no_ext:
         a = a.split(".")[0]
     return a
 
 
 def removeBaseFolder(path):
-    s = path.split('/')
-    s = "/".join(str(x) for x in s[2:])
+    sep = file_seperator()
+    s = path.split(sep)
+    if platform.system() == 'Windows':
+        split_at = 1
+    else:
+        split_at = 2
+    s = sep.join(str(x) for x in s[split_at:])
     if len(s) > 0 and s[0] == " ":
         s = s[1:]
     return s
@@ -75,22 +82,35 @@ def getCategory(folder, color_scheme_entry):
     return f'{folder} {design_name} {variant}'
 
 
+def file_seperator():
+    if platform.system() == 'Windows':
+	    return "\\"
+    else:
+        return "/"
+	
+
 def splitPath(path, no_cat=False):
     x = getFileName(path)
 
+    sep = file_seperator()	
+	
     if no_cat:
-
-        subdir = path.split("/")[:-1]
-        subdir = "/".join(str(f) for f in subdir)
-
+        subdir = path.split(sep)[:-1]
+        subdir = sep.join(str(f) for f in subdir)
         s = removeBaseFolder(subdir)
 
         return x, None, s
     else:
-        category = path.split("/")[2]
+        
+        if platform.system() == 'Windows':
+            split_at = 1
+        else:
+            split_at = 2
 
-        subdir = path.split("/")[1:-1]
-        subdir = "/".join(str(f) for f in subdir)
+        category = path.split(sep)[split_at]
+
+        subdir = path.split(sep)[1:-1]
+        subdir = sep.join(str(f) for f in subdir)
 
         s = removeBaseFolder(subdir)
 

@@ -60,7 +60,7 @@ class imageMagickRE(RasterEngine):
             png_path = escape_path(png_path)
             svg_path = escape_path(svg_path)
 
-            if self.max_dim == -1:
+            if self.max_dim == "-1":
                 proc = engine_lib.run([
                     PATH_TO_IMAGEMAGICK,
                     '-background', 'none',
@@ -71,8 +71,8 @@ class imageMagickRE(RasterEngine):
                 proc = engine_lib.run([
                     PATH_TO_IMAGEMAGICK,
                     '-background', 'none',
-                    '-resize', self.max_dim + 'x' + self.max_dim,
                     svg_path,
+                    '-resize', self.max_dim + 'x' + self.max_dim,
                     png_path,
                 ])
 

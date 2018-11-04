@@ -11,8 +11,8 @@ from tqdm import tqdm
 
 if platform.system() == 'Windows':
     RASTER_ENGINE = 'INKSCAPE'
-    RASTER_ENGINE = 'IMAGEMAGICK'
     RASTER_ENGINE = 'SVGLIB'
+    RASTER_ENGINE = 'IMAGEMAGICK'
 else:
     RASTER_ENGINE = 'CAIROSVG'
     # RASTER_ENGINE = 'CAIRO'
@@ -38,7 +38,7 @@ if args.is_tree_mode:
         basefile, category, s = splitPath(f)
 
         file_name = f'{prefix}{TREE_DIR}/{category}/{s}/{basefile}.svg'
-
+        
         png_path = os.path.join(file_name.replace('svg', 'png'))
 
         svg_path = os.path.join(f)
@@ -55,10 +55,9 @@ else:
 
     files = getAllFilesInDir(".svg", SVG_DIR)
     for f in tqdm(files):
-        if platform.system() == 'Windows':
-            file_name = f.split("\\")[-1]
-        else:
-            file_name = f.split("/")[-1]
+    
+        basefile, category, s = splitPath(f)
+        file_name = removeBaseFolder(f)
 
         svg_path = os.path.join(f)
         png_path = os.path.join(
