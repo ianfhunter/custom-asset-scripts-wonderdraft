@@ -60,11 +60,11 @@ for fn in tqdm(template_filenames):
         p_num = 1
 
         c = getCategory("", x)
-		
+
         basefileext, _, s = splitPath(fn, no_cat=True)
-        print("category: ", c)
-        print("basefileext: ", basefileext)
-        print("subdir: ", s)
+        # print("category: ", c)
+        # print("basefileext: ", basefileext)
+        # print("subdir: ", s)
 
         # Generate all of the applicable permutations of the current color scheme
         # (n=3 for one slot, n=6 for two or three slots)
@@ -79,20 +79,19 @@ for fn in tqdm(template_filenames):
 
             # Detect if MultiSymbol or not
             basefile = getFileName(fn, no_ext=True)
-            print("basefile: ", basefile)
+            # print("basefile: ", basefile)
             trail_str = basefile[-1]
-            multi_symbol = False
-            if any(char.isdigit() for char in trail_str):
-                multi_symbol = True
 
+            multi_symbol = True
+            # multi_symbol = False
+            # if any(char.isdigit() for char in trail_str):
+            #     multi_symbol = True
 
             if multi_symbol:
                 file_name = f'{prefix}{SVG_DIR}/{c}/{s}/{basefile}-{p_num}.svg'
             else:
                 file_name = f'{prefix}{SVG_DIR}/{c}/{s}/{basefile}.svg'
 
-            print(file_name)
-				
             file = file_name
             saveWrite(svg_out, file)
 
