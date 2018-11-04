@@ -4,7 +4,7 @@ import platform
 import re
 import glob
 from pathlib import Path
-from raster_engines import getEngine
+from raster_engines import getEngine, getEngine2
 from file_system import *
 from user_interface import *
 from tqdm import tqdm
@@ -15,11 +15,13 @@ if platform.system() == 'Windows':
     RASTER_ENGINE = 'IMAGEMAGICK'
 else:
     RASTER_ENGINE = 'CAIROSVG'
+    RASTER_ENGINE = 'RSVG'
     # RASTER_ENGINE = 'CAIRO'
     #RASTER_ENGINE = 'SVGLIB'
 
 args = genWonderDraftUI()
 
+engine = getEngine2(args)
 engine = getEngine(RASTER_ENGINE, args)
 
 createFolders()
@@ -38,7 +40,7 @@ if args.is_tree_mode:
         basefile, category, s = splitPath(f)
 
         file_name = f'{prefix}{TREE_DIR}/{category}/{s}/{basefile}.svg'
-        
+
         png_path = os.path.join(file_name.replace('svg', 'png'))
 
         svg_path = os.path.join(f)
@@ -55,7 +57,7 @@ else:
 
     files = getAllFilesInDir(".svg", SVG_DIR)
     for f in tqdm(files):
-    
+
         basefile, category, s = splitPath(f)
         file_name = removeBaseFolder(f)
 

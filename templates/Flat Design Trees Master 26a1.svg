@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.1"
+   id="downloadSvg"
+   x="0px"
+   y="0px"
+   viewBox="0 0 1200 1200"
+   enable-background="new 0 0 1200 1200"
+   xml:space="preserve"
+   height="256"
+   width="256"
+   sodipodi:docname="Flat Design Trees Master 26a1.svg"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"><metadata
+   id="metadata4331"><rdf:RDF><cc:Work
+       rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><defs
+   id="defs4329" /><sodipodi:namedview
+   pagecolor="#ffffff"
+   bordercolor="#666666"
+   borderopacity="1"
+   objecttolerance="10"
+   gridtolerance="10"
+   guidetolerance="10"
+   inkscape:pageopacity="0"
+   inkscape:pageshadow="2"
+   inkscape:window-width="1920"
+   inkscape:window-height="1001"
+   id="namedview4327"
+   showgrid="false"
+   inkscape:zoom="0.921875"
+   inkscape:cx="128"
+   inkscape:cy="128"
+   inkscape:window-x="-9"
+   inkscape:window-y="-9"
+   inkscape:window-maximized="1"
+   inkscape:current-layer="g4324" />
+<g
+   id="g4324">
+	<rect
+   x="599.99402"
+   y="1106.726"
+   width="16.105"
+   height="69.096001"
+   id="rect4316"
+   style="fill:#ad6630" />
+	<rect
+   x="583.89502"
+   y="1106.724"
+   width="16.105"
+   height="69.096001"
+   id="rect4318"
+   style="fill:#79532b" />
+	<path
+   d="m 736.75,662.121 c 0,299.975 -78.475,448.445 -136.753,448.475 V 24.178 c 96.346,4.431 136.753,337.956 136.753,637.943 z"
+   style="fill:#cf211b"
+   id="path4320"
+   inkscape:connector-curvature="0" />
+	<path
+   d="m 463.25,662.121 c 0,299.975 78.474,448.445 136.752,448.475 V 24.178 C 503.656,28.609 463.25,362.134 463.25,662.121 Z"
+   style="display:inline;fill:#cf211b;fill-opacity:1"
+   id="path4322"
+   inkscape:connector-curvature="0" />
+</g>
+</svg>
