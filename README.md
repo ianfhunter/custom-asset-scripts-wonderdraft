@@ -29,22 +29,4 @@ For the imagemagick engine (windows), download here http://www.imagemagick.org/s
 change RENDER_ENGINE variable to the appropiate one
 you may also like to change PATH_TO_IMAGEMAGICK & PATH_TO_INKSCAPE if they do not match up.
 
-### Performance
-
-Some performance numbers based on symbol mode.
-
-#### Linux
-
-| Raster Engine | Sample Time |
-| ------------- | -------------: |
-| `CAIROSVG`  | 22s  |
-| `CAIRO + RSVG`  | TBD  |
-| `SVGLIB`  | 2m44s  |
-
-#### Windows
-
-| Raster Engine | Sample Time |
-| ------------- | -------------: |
-| `INKSCAPE`  | 12m19s  |
-| `IMAGEMAGICK`  | 1m28s  |
-| `SVGLIB`  | 1m50s  |
+See the Wiki for more info
