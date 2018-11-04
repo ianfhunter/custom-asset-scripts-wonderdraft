@@ -1,32 +1,9 @@
 # Accelerated Assets for Wonderdraft
-Scripts to accelerate Asset creation for the map making tool Wonderdraft
+This repository contains several programs aimed at making the cartographer's life easier - or at least those cartographers that use the map making tool WonderDraft.
 
-Two scripts currently exist:
+## List of Programs:
 
-#### Generate SVGS
+* Generate Color Permutations of a SVG
+* Convert SVGs to Wonderdraft PNG 
 
-This script generates different SVGs based on an original and some given color schemes.
-Outputs in 'svg_output'
-
-Tip: Define your own Custom color schemes in color_schemes.txt
-Colors must be defined using Hexadecimal Format.
-
-#### Generate WonderDraft Symbols
-
-This script generates trees or symbols for Wonderdraft from the svgs produced with the previous script.
-Outputs in 'trees' or 'symbols' accordingly.
-
-### Installation
-
-#### Windows
-* Install Python3 (https://www.python.org/downloads/windows/)
-
-You can install using requirements.txt and pip3
-
-For the imagemagick engine (windows), download here http://www.imagemagick.org/script/download.php#windows
-
-### Switching Render Engines
-change RENDER_ENGINE variable to the appropiate one
-you may also like to change PATH_TO_IMAGEMAGICK & PATH_TO_INKSCAPE if they do not match up.
-
-See the Wiki for more info
+Please refer to the Wiki for full documentation
