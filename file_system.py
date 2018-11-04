@@ -29,7 +29,7 @@ def getFileName(path, no_ext=False):
     sep = file_seperator()
     a = path.split(sep)[-1]
     if no_ext:
-        a = a.split(".")[0]
+        a = ".".join(str(x) for x in a.split(".")[:-1])
     return a
 
 
@@ -87,13 +87,13 @@ def file_seperator():
 	    return "\\"
     else:
         return "/"
-	
+
 
 def splitPath(path, no_cat=False):
     x = getFileName(path)
 
-    sep = file_seperator()	
-	
+    sep = file_seperator()
+
     if no_cat:
         subdir = path.split(sep)[:-1]
         subdir = sep.join(str(f) for f in subdir)
@@ -101,7 +101,7 @@ def splitPath(path, no_cat=False):
 
         return x, None, s
     else:
-        
+
         if platform.system() == 'Windows':
             split_at = 1
         else:
