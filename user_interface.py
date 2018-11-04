@@ -3,6 +3,23 @@ import glob
 import argparse
 
 
+def is_number(s):
+    try:
+        float(s)
+        return True
+    except ValueError:
+        pass
+ 
+    try:
+        import unicodedata
+        unicodedata.numeric(s)
+        return True
+    except (TypeError, ValueError):
+        pass
+ 
+    return False
+
+
 def genWonderDraftUI():
     # Commandline
     parser = argparse.ArgumentParser()
@@ -14,22 +31,35 @@ def genWonderDraftUI():
 
     args = parser.parse_args()
 
-    # User Prompt
+    # User Prompts as backup
+    
     if args.symbol:
         mode_input = 's'
     elif args.tree:
         mode_input = 't'
     else:
         mode_input = 'invalid'
-
+    
+    # Mode of Operation
     while mode_input != 's' and mode_input != 't':
         mode_input = input('Operate in (S)ymbol mode or (T)ree mode? ').lower()
-
+        
     if mode_input == 't':
         args.is_tree_mode = True
     else:
         args.is_tree_mode = False
 
+    # Maximum Dimension Size
+    if args.max_dim == -1:
+        while mode_input not in ['n', 'no', -1] and not is_number(mode_input):
+            mode_input = input('Maximum Output Dimension Size: Number or (NO): ').lower()
+        if mode_input in ['n', 'no'] :
+            args.max_dim = -1
+        else:
+            args.max_dim = int(mode_input)
+
+
+        
     return args
 
 
