@@ -88,9 +88,9 @@ for fn in tqdm(template_filenames):
             #     multi_symbol = True
 
             if multi_symbol:
-                file_name = f'{prefix}{SVG_DIR}/{c}/{s}/{basefile}-{p_num}.svg'
+                file_name = f'{prefix}{SVG_DIR}/{c}/{s}/{c} {basefile}-{p_num}.svg'
             else:
-                file_name = f'{prefix}{SVG_DIR}/{c}/{s}/{basefile}.svg'
+                file_name = f'{prefix}{SVG_DIR}/{c}/{s}/{c} {basefile}.svg'
 
             file = file_name
             saveWrite(svg_out, file)

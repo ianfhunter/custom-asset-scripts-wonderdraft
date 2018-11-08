@@ -16,7 +16,7 @@ if platform.system() == 'Windows':
 else:
     RASTER_ENGINE = 'CAIROSVG'
     # RASTER_ENGINE = 'CAIRO'
-
+    #RASTER_ENGINE = 'SVGLIB'
 
 args = genWonderDraftUI()
 
