@@ -61,6 +61,7 @@ for fn in tqdm(template_filenames):
 
         c = getCategory("", x)
 
+        print(fn)
         basefileext, _, s = splitPath(fn, no_cat=True)
         # print("category: ", c)
         # print("basefileext: ", basefileext)

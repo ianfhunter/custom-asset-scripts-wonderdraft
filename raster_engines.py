@@ -9,37 +9,6 @@ from pathlib import Path
 PATH_TO_IMAGEMAGICK = r'C:\Program Files\ImageMagick-7.0.8-Q16\magick.exe'
 PATH_TO_INKSCAPE = r'C:\Program Files\Inkscape\inkscape.com'
 
-def getEngine2(args):
-
-    possible_engines = [
-        cairoSVGRE(),
-        imageMagickRE(),
-        inkscapeRE(),
-        cairoRE(),
-        svglibRE(),
-        rsvgRE()
-    ]
-
-    supported_engines = []
-    unsupported_engines = []
-
-    for e in possible_engines:
-        try:
-            e.load(args)
-            supported_engines.append(e.name)
-        except:
-            unsupported_engines.append(e.name)
-
-    print("Inactive Rasterizing Engines: ")
-    for x in unsupported_engines:
-        print("*", x)
-
-
-    print("Available Rasterizing Engines: ")
-    for x in range(len(supported_engines)):
-        print("("+str(x)+")", supported_engines[x])
-
-    print("Please Select an engine:")
 
 
 def getEngine(selection, args):
@@ -199,11 +168,11 @@ class inkscapeRE(RasterEngine):
             ])
 
 
-def splitPath(path):
-    if platform.system() == 'Windows':
-        return path.split("\\")[-1]
-    else:
-        return path.split("/")[-1]
+# def splitPath(path):
+#     if platform.system() == 'Windows':
+#         return path.split("\\")[-1]
+#     else:
+#         return path.split("/")[-1]
 
 
 def escape_path(path):

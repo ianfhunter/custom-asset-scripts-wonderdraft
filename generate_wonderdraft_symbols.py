@@ -4,7 +4,7 @@ import platform
 import re
 import glob
 from pathlib import Path
-from raster_engines import getEngine, getEngine2
+from raster_engines import getEngine
 from file_system import *
 from user_interface import *
 from tqdm import tqdm
@@ -21,8 +21,8 @@ else:
 
 args = genWonderDraftUI()
 
-engine = getEngine2(args)
-engine = getEngine(RASTER_ENGINE, args)
+engine = selectEngine(args)
+# engine = getEngine(RASTER_ENGINE, args)
 
 createFolders()
 
