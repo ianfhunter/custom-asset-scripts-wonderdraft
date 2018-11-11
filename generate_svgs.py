@@ -55,7 +55,10 @@ for fn in tqdm(template_filenames):
         num_colors = len(slot_colors)
 
 
-    for x in color_schemes:
+    for i, x in enumerate(color_schemes):
+
+        if args.quick and i > 0:
+            continue
 
         p_num = 1
 

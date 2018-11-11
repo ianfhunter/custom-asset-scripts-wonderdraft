@@ -73,7 +73,18 @@ def genSVGUI():
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument("-p", "--prefix", help="Prefix", default=None, type=str)
+    parser.add_argument("-q", "--quick", help="Only generate one color permutation per theme", action="store_true")
     args = parser.parse_args()
+
+    if args.quick == False:
+        mode_input = "Q"
+        while mode_input not in ['y', 'n']:
+            mode_input = input('Complete (Y) or Quick(N) Generation: ').lower()
+
+        if mode_input == 'y':
+            args.quick = True
+
+
     return args
 
 
