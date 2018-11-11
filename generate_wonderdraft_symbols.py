@@ -8,65 +8,76 @@ from raster_engines import getEngine
 from file_system import *
 from user_interface import *
 from tqdm import tqdm
+from config import *
 
-if platform.system() == 'Windows':
-    RASTER_ENGINE = 'INKSCAPE'
-    RASTER_ENGINE = 'SVGLIB'
-    RASTER_ENGINE = 'IMAGEMAGICK'
-else:
-    RASTER_ENGINE = 'CAIROSVG'
-    RASTER_ENGINE = 'RSVG'
-    # RASTER_ENGINE = 'CAIRO'
-    #RASTER_ENGINE = 'SVGLIB'
+def generateWonderDraftSymbols(no_prompt=False):
+    if platform.system() == 'Windows':
+        RASTER_ENGINE = 'INKSCAPE'
+        RASTER_ENGINE = 'SVGLIB'
+        RASTER_ENGINE = 'IMAGEMAGICK'
+    else:
+        RASTER_ENGINE = 'CAIROSVG'
+        RASTER_ENGINE = 'RSVG'
+        # RASTER_ENGINE = 'CAIRO'
+        #RASTER_ENGINE = 'SVGLIB'
 
-args = genWonderDraftUI()
+    args = genWonderDraftUI(no_prompt=no_prompt)
 
-engine = selectEngine(args)
-# engine = getEngine(RASTER_ENGINE, args)
+    engine = selectEngine(args, no_prompt=no_prompt)
+    # engine = getEngine(RASTER_ENGINE, args)
 
-createFolders()
+    createFolders()
 
-ensurePopulated(SVG_DIR)
+    ensurePopulated(SVG_DIR)
 
-filenames = getAllFilesInDir(".svg", SVG_DIR)
+    filenames = getAllFilesInDir(".svg", SVG_DIR)
 
-prefix = ""
+    prefix = ""
 
-if args.is_tree_mode:
-
-    files = getAllFilesInDir(".svg", SVG_DIR)
-    for f in tqdm(files):
-
-        basefile, category, s = splitPath(f)
-
-        file_name = f'{prefix}{TREE_DIR}/{category}/{s}/{basefile}.svg'
-
-        png_path = os.path.join(file_name.replace('svg', 'png'))
-
-        svg_path = os.path.join(f)
-
-        saveWrite(None, png_path)
-        engine.convert(
-            svg_path,
-            png_path
-        )
-
-else:
-    # Ensure the output directory exists
+    if no_prompt:
+        tqdm_out = open(PROGRESS_TRACKER_PNG_TMP_FILE, "w")
+    else:
+        tqdm_out = None
 
 
-    files = getAllFilesInDir(".svg", SVG_DIR)
-    for f in tqdm(files):
+    if args.is_tree_mode:
 
-        basefile, category, s = splitPath(f)
-        file_name = removeBaseFolder(f)
+        files = getAllFilesInDir(".svg", SVG_DIR)
+        for f in tqdm(files, file=tqdm_out):
 
-        svg_path = os.path.join(f)
-        png_path = os.path.join(
-            SYMBOL_DIR, file_name.replace('svg', 'png'))
+            basefile, category, s = splitPath(f)
 
-        saveWrite(None, png_path)
-        engine.convert(
-            svg_path,
-            png_path
-        )
+            file_name = f'{prefix}{TREE_DIR}/{category}/{s}/{basefile}.svg'
+
+            png_path = os.path.join(file_name.replace('svg', 'png'))
+
+            svg_path = os.path.join(f)
+
+            saveWrite(None, png_path)
+            engine.convert(
+                svg_path,
+                png_path
+            )
+
+    else:
+        # Ensure the output directory exists
+
+
+        files = getAllFilesInDir(".svg", SVG_DIR)
+        for f in tqdm(files, file=tqdm_out):
+
+            basefile, category, s = splitPath(f)
+            file_name = removeBaseFolder(f)
+
+            svg_path = os.path.join(f)
+            png_path = os.path.join(
+                SYMBOL_DIR, file_name.replace('svg', 'png'))
+
+            saveWrite(None, png_path)
+            engine.convert(
+                svg_path,
+                png_path
+            )
+
+if __name__ == "__main__":
+    generateWonderDraftSymbols()

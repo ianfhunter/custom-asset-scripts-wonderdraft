@@ -1,13 +1,7 @@
 import os
 import glob
 import platform
-
-TEMPLATE_DIR = './templates'
-SVG_DIR = './svg_output'
-SYMBOL_DIR = './symbols'
-TREE_DIR = './trees'
-COLOR_SCHEME_FILE = './color_schemes.txt'
-
+from config import *
 
 def createFolders():
     for x in [SVG_DIR, SYMBOL_DIR, TREE_DIR]:
