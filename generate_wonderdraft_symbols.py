@@ -10,21 +10,17 @@ from user_interface import *
 from tqdm import tqdm
 from config import *
 
-def generateWonderDraftSymbols(no_prompt=False):
-    if platform.system() == 'Windows':
-        RASTER_ENGINE = 'INKSCAPE'
-        RASTER_ENGINE = 'SVGLIB'
-        RASTER_ENGINE = 'IMAGEMAGICK'
-    else:
-        RASTER_ENGINE = 'CAIROSVG'
-        RASTER_ENGINE = 'RSVG'
-        # RASTER_ENGINE = 'CAIRO'
-        #RASTER_ENGINE = 'SVGLIB'
+def generateWonderDraftSymbols(args, gui=False):
+    # if platform.system() == 'Windows':
+    #     RASTER_ENGINE = 'INKSCAPE'
+    #     RASTER_ENGINE = 'SVGLIB'
+    #     RASTER_ENGINE = 'IMAGEMAGICK'
+    # else:
+    #     RASTER_ENGINE = 'CAIROSVG'
+    #     RASTER_ENGINE = 'RSVG'
+    #     # RASTER_ENGINE = 'CAIRO'
+    #     #RASTER_ENGINE = 'SVGLIB'
 
-    args = genWonderDraftUI(no_prompt=no_prompt)
-
-    engine = selectEngine(args, no_prompt=no_prompt)
-    # engine = getEngine(RASTER_ENGINE, args)
 
     createFolders()
 
@@ -34,7 +30,7 @@ def generateWonderDraftSymbols(no_prompt=False):
 
     prefix = ""
 
-    if no_prompt:
+    if gui:
         tqdm_out = open(PROGRESS_TRACKER_PNG_TMP_FILE, "w")
     else:
         tqdm_out = None
@@ -54,7 +50,7 @@ def generateWonderDraftSymbols(no_prompt=False):
             svg_path = os.path.join(f)
 
             saveWrite(None, png_path)
-            engine.convert(
+            args.engine.convert(
                 svg_path,
                 png_path
             )
@@ -74,10 +70,14 @@ def generateWonderDraftSymbols(no_prompt=False):
                 SYMBOL_DIR, file_name.replace('svg', 'png'))
 
             saveWrite(None, png_path)
-            engine.convert(
+            args.engine.convert(
                 svg_path,
                 png_path
             )
 
 if __name__ == "__main__":
-    generateWonderDraftSymbols()
+    args = genWonderDraftUI()
+    initEngineSupport(args)
+    args.engine = selectEnginePrompt(args)
+
+    generateWonderDraftSymbols(args)

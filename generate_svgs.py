@@ -8,34 +8,24 @@ from config import *
 
 
 
-def generateSVGs(no_prompt=False):
-    args = genSVGUI(no_prompt=no_prompt)
+def generateSVGs(args, gui=False):
 
-    print("Initial variables have been created!")
+    if not gui:
+        print("Initial variables have been created!")
 
-    if no_prompt:
-        prefix_request = ""
-    else:
-        if args.prefix is None:
-            prefix_request = input("Please enter the PREFIX for all new permutations: ")
-            print("You entered " + str(prefix_request) +
-                " as the PREFIX for all new permutations")
-        else:
-            prefix_request = args.prefix
-
-    prefix = prefix_request
 
     # Ensure the output directory exists
     createFolders()
 
-    print("Processing permutations please wait... ")
+    if not gui:
+        print("Processing permutations please wait... ")
 
     color_schemes = readColorSchemeFile()
 
     template_filenames = getAllFilesInDir(".svg", TEMPLATE_DIR)
 
     # For each of the template files
-    if no_prompt:
+    if gui:
         tqdm_out = open(PROGRESS_TRACKER_SVG_TMP_FILE, "w")
     else:
         tqdm_out = None
@@ -74,7 +64,8 @@ def generateSVGs(no_prompt=False):
 
             c = getCategory("", x)
 
-            print(fn)
+            if not gui:
+                print(fn)
             basefileext, _, s = splitPath(fn, no_cat=True)
             # print("category: ", c)
             # print("basefileext: ", basefileext)
@@ -102,18 +93,21 @@ def generateSVGs(no_prompt=False):
                 #     multi_symbol = True
 
                 if multi_symbol:
-                    file_name = f'{prefix}{SVG_DIR}/{c}/{s}/{c} {basefile}-{p_num}.svg'
+                    file_name = f'{args.prefix}{SVG_DIR}/{c}/{s}/{c} {basefile}-{p_num}.svg'
                 else:
-                    file_name = f'{prefix}{SVG_DIR}/{c}/{s}/{c} {basefile}.svg'
+                    file_name = f'{args.prefix}{SVG_DIR}/{c}/{s}/{c} {basefile}.svg'
 
                 file = file_name
                 saveWrite(svg_out, file)
 
                 p_num += 1
 
-    print("All permutations have been created!")
+    if not gui:
+        print("All permutations have been created!")
     return True
 
 
 if __name__ == "__main__":
-    generateSVGs()
+
+    args = genSVGUI()
+    generateSVGs(args)
