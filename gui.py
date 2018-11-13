@@ -17,6 +17,9 @@ from generate_svgs import generateSVGs
 from generate_wonderdraft_symbols import generateWonderDraftSymbols
 from pyforms import start_app
 
+from PyQt5 import QtCore, QtGui
+import time
+
 
 class ArgPasser:
     def __init__(self,
@@ -32,6 +35,40 @@ class ArgPasser:
         self.is_tree_mode = tree_mode
         self.max_dim = max_dim
 
+        
+class ProgessTrackerThread(QtCore.QThread):
+
+    progressPercent = QtCore.pyqtSignal(dict)
+
+    def __init__(self, tracking_file):
+        QtCore.QThread.__init__(self)
+        self.tracking_file = tracking_file
+
+    def __del__(self):
+        self.wait()
+
+    def run(self):
+    
+    
+        progress = 0
+        while progress < 100:
+            sleep(0.1)
+            print("Progress: ", progress)
+            try:
+                with open(self.tracking_file) as f:
+                    first_line = f.read()
+                perc_found = re.findall(r"(\d+%)", first_line)[-1]
+                progress = int(perc_found[:-1])
+            except Exception as e:
+                print(e)
+   
+            self.progressPercent.emit( {"perc": progress} )
+
+        self.progressPercent.emit({"perc": 100, "complete":True})
+            
+        self.finished.emit()
+#        self.terminate()
+        
 class wonderdraftGUI(BaseWidget):
 
     def __init__(self, *args, **kwargs):
@@ -67,31 +104,25 @@ class wonderdraftGUI(BaseWidget):
         if (self._outputmaxdim.value > 0):
             mdim = self._outputmaxdim.value
 
-        t1 = Thread(target=generateWonderDraftSymbols, args=(ArgPasser(
-            prefix=self._prefix.value,
-            max_dim=mdim,
-        ), {'gui':True}))
+        a = ArgPasser(
+                prefix=self._prefix.value,
+                max_dim=mdim,
+            )
+            
+        thread = ProgessTrackerThread(PROGRESS_TRACKER_PNG_TMP_FILE)
+        thread.progressPercent.connect(self.update_progress)
+        thread.start()
+
+        t1 = Thread(target=generateWonderDraftSymbols, args=(a, {'gui':True}))
         t1.start()
 
-        t2 = Thread(target=self.update_progress, args=())
-        t2.start()
 
-    def update_progress(self):
+    def update_progress(self, data):
         self._progress.min = 0
         self._progress.max = 100
-        self._progress.value = 0
-
-        while self._progress.value < 100:
-            sleep(0.1)
-            try:
-                with open(PROGRESS_TRACKER_PNG_TMP_FILE) as f:
-                    first_line = f.read()
-                perc_found = re.findall(r"(\d+%)", first_line)[-1]
-                self._progress.value = int(perc_found[:-1])
-            except Exception as e:
-                print(e)
-
-        self._progress.label = "Complete"
+        self._progress.value = data["perc"]
+        if "complete" in data:
+            self._progress.label = "Complete"
 
 class svgGUI(BaseWidget):
 
@@ -104,6 +135,7 @@ class svgGUI(BaseWidget):
         self._quickmodebox  = ControlCheckBox('Quick Mode')
         self._runbutton  = ControlButton('Generate SVGs')
 
+        self._estimated_time = ControlLabel('Estimated Time: XYZmins')
         self._progress = ControlProgress('Coversion Progress')
 
         self._runbutton.value = self.callFn
@@ -113,37 +145,32 @@ class svgGUI(BaseWidget):
             '_prefix',
             '_color',
             '_quickmodebox',
+            
+            '_estimated_time',
             '_progress',
             '_runbutton'
         ]
 
     def callFn(self):
 
-        t1 = Thread(target=generateSVGs, args=(ArgPasser(
+        a=ArgPasser(
             prefix=self._prefix.value,
+        )
 
-        ),{'gui':True}))
+        thread = ProgessTrackerThread(PROGRESS_TRACKER_SVG_TMP_FILE)
+        thread.progressPercent.connect(self.update_progress)
+        thread.start()
+
+        t1 = Thread(target=generateSVGs, args=(a, {'gui':True}))
         t1.start()
 
-        t2 = Thread(target=self.update_progress, args=())
-        t2.start()
 
-    def update_progress(self):
+    def update_progress(self, data):
         self._progress.min = 0
         self._progress.max = 100
-        self._progress.value = 0
-
-        while self._progress.value < 100:
-            sleep(0.1)
-            try:
-                with open(PROGRESS_TRACKER_SVG_TMP_FILE) as f:
-                    first_line = f.read()
-                perc_found = re.findall(r"(\d+%)", first_line)[-1]
-                self._progress.value = int(perc_found[:-1])
-            except Exception as e:
-                print(e)
-
-        self._progress.label = "Complete"
+        self._progress.value = data["perc"]
+        if "complete" in data:
+            self._progress.label = "Complete"
 
 
 
@@ -171,7 +198,6 @@ class mainGUI(BaseWidget):
 
         self._runbutton.value = self.launchSVG
         self._runbutton2.value = self.launchPNG
-        print(dir(self._runbutton))
 
     def launchSVG(self, btn):
         win = svgGUI()
