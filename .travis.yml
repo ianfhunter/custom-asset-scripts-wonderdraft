@@ -11,10 +11,9 @@ os:
 
 sudo: enabled
 before_install:
-  if [ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y python3-cairo ;
+  - if [ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y python3-cairo ;
 
 install:
-  pip install --user -r requirements.txt
+  - pip install --user -r requirements.txt
 
-script:
-  python tests.py
+script: python tests.py
