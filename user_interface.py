@@ -100,6 +100,13 @@ supported_engines = None
 unsupported_engines = None
 
 
+def getEngineSpecs():
+    global possible_engines
+    global supported_engines
+    global unsupported_engines
+    return possible_engines, supported_engines, unsupported_engines
+
+
 def initEngineSupport(args):
     global possible_engines
     global supported_engines

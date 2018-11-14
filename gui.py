@@ -6,7 +6,7 @@ from file_system import *
 import itertools
 from threading import Thread
 from time import sleep
-from user_interface import selectEngine, initEngineSupport
+from user_interface import selectEngine, initEngineSupport, getEngineSpecs
 import os
 import re
 
@@ -26,16 +26,19 @@ class ArgPasser:
                  quick=False,
                  prefix="",
                  tree_mode=True,
-                 max_dim=-1
+                 max_dim=-1,
+                 engine=None,
                  ):
         initEngineSupport(self)
-        self.engine = selectEngine(0)
+        if engine is None:
+            engine = selectEngine(0)
+        self.engine = engine
         self.quick = quick
         self.prefix = prefix
         self.is_tree_mode = tree_mode
         self.max_dim = max_dim
 
-        
+
 class ProgessTrackerThread(QtCore.QThread):
 
     progressPercent = QtCore.pyqtSignal(dict)
@@ -48,8 +51,8 @@ class ProgessTrackerThread(QtCore.QThread):
         self.wait()
 
     def run(self):
-    
-    
+
+
         progress = 0
         while progress < 100:
             sleep(0.1)
@@ -61,14 +64,14 @@ class ProgessTrackerThread(QtCore.QThread):
                 progress = int(perc_found[:-1])
             except Exception as e:
                 print(e)
-   
+
             self.progressPercent.emit( {"perc": progress} )
 
         self.progressPercent.emit({"perc": 100, "complete":True})
-            
+
         self.finished.emit()
 #        self.terminate()
-        
+
 class wonderdraftGUI(BaseWidget):
 
     def __init__(self, *args, **kwargs):
@@ -78,7 +81,17 @@ class wonderdraftGUI(BaseWidget):
         self._prefix = ControlText('File Prefix')
         self._outputmaxdim = ControlNumber('Dimension Limit')
         self._quickmodebox  = ControlCheckBox('Quick Mode')
-        self._engine = ControlList('Engine', data=["1","2"])
+        self._engine = ControlList('Engine')
+        initEngineSupport(ArgPasser())
+
+        _, supported_engines, _ = getEngineSpecs()
+        print(supported_engines)
+
+        a = []
+        for x in supported_engines:
+            a.append([x.name])
+
+        self._engine.value=a
         self._symbolmode  = ControlCheckBox('Symbol Mode')
         self._treemode  = ControlCheckBox('Tree Mode')
 
@@ -107,8 +120,9 @@ class wonderdraftGUI(BaseWidget):
         a = ArgPasser(
                 prefix=self._prefix.value,
                 max_dim=mdim,
+                engine=selectEngine(self._engine.selected_row_index)
             )
-            
+
         thread = ProgessTrackerThread(PROGRESS_TRACKER_PNG_TMP_FILE)
         thread.progressPercent.connect(self.update_progress)
         thread.start()
@@ -145,7 +159,7 @@ class svgGUI(BaseWidget):
             '_prefix',
             '_color',
             '_quickmodebox',
-            
+
             '_estimated_time',
             '_progress',
             '_runbutton'
