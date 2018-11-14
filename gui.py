@@ -6,7 +6,7 @@ from file_system import *
 import itertools
 from threading import Thread
 from time import sleep
-from user_interface import selectEngine, initEngineSupport
+from user_interface import selectEngine, initEngineSupport, getEngineSpecs
 import os
 import re
 
@@ -23,10 +23,13 @@ class ArgPasser:
                  quick=False,
                  prefix="",
                  tree_mode=True,
-                 max_dim=-1
+                 max_dim=-1,
+                 engine=None,
                  ):
         initEngineSupport(self)
-        self.engine = selectEngine(0)
+        if engine is None:
+            engine = selectEngine(0)
+        self.engine = engine
         self.quick = quick
         self.prefix = prefix
         self.is_tree_mode = tree_mode
@@ -41,7 +44,17 @@ class wonderdraftGUI(BaseWidget):
         self._prefix = ControlText('File Prefix')
         self._outputmaxdim = ControlNumber('Dimension Limit')
         self._quickmodebox  = ControlCheckBox('Quick Mode')
-        self._engine = ControlList('Engine', data=["1","2"])
+        self._engine = ControlList('Engine')
+        initEngineSupport(ArgPasser())
+
+        _, supported_engines, _ = getEngineSpecs()
+        print(supported_engines)
+
+        a = []
+        for x in supported_engines:
+            a.append([x.name])
+
+        self._engine.value=a
         self._symbolmode  = ControlCheckBox('Symbol Mode')
         self._treemode  = ControlCheckBox('Tree Mode')
 
@@ -70,6 +83,7 @@ class wonderdraftGUI(BaseWidget):
         t1 = Thread(target=generateWonderDraftSymbols, args=(ArgPasser(
             prefix=self._prefix.value,
             max_dim=mdim,
+            engine=selectEngine(self._engine.selected_row_index)
         ), {'gui':True}))
         t1.start()
 
