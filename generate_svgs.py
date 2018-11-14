@@ -20,7 +20,9 @@ def generateSVGs(args, gui=False):
     if not gui:
         print("Processing permutations please wait... ")
 
-    color_schemes = readColorSchemeFile()
+    color_schemes = readColorSchemeFile_Themes()
+
+    print("color_schemes",color_schemes)
 
     template_filenames = getAllFilesInDir(".svg", TEMPLATE_DIR)
 
@@ -51,13 +53,15 @@ def generateSVGs(args, gui=False):
         # Read in the master SVG
         with open(os.path.join(fn)) as f:
             svg_in = f.read()
-            slot_colors = [t for t in TEMPLATE_COLORS if t in svg_in]
+            slot_colors = [t for t in readColorSchemeFile_Colors() if t in svg_in]
+            print("SLOT COLORS:", slot_colors)
             num_colors = len(slot_colors)
 
 
         for i, x in enumerate(color_schemes):
 
             if args.quick and i > 0:
+                print("skup")
                 continue
 
             p_num = 1
@@ -76,6 +80,9 @@ def generateSVGs(args, gui=False):
             color_permutations = list(
                 itertools.permutations(x['colors'], num_colors))
 
+            print(x)
+            print("color_permutations:", color_permutations)
+
             # Generate a new SVG for each permutation
             for perm in color_permutations:
                 svg_out = svg_in
@@ -91,6 +98,8 @@ def generateSVGs(args, gui=False):
                 # multi_symbol = False
                 # if any(char.isdigit() for char in trail_str):
                 #     multi_symbol = True
+
+                args.prefix = ""    # TODO: BUG
 
                 if multi_symbol:
                     file_name = f'{args.prefix}{SVG_DIR}/{c}/{s}/{c} {basefile}-{p_num}.svg'

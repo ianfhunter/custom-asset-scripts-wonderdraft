@@ -41,7 +41,7 @@ def removeBaseFolder(path):
 
 
 def saveWrite(toWrite, path):
-
+    print("Write to: ", path)
     if not os.path.exists(os.path.dirname(path)):
         os.makedirs(os.path.dirname(path))
 
@@ -55,7 +55,28 @@ def ensurePopulated(path):
         print(path + " folder that should contain files is empty.")
 
 
-def readColorSchemeFile():
+def readColorSchemeFile_Colors():
+    x = [
+        {
+            'color_replacements': s
+        }
+        for s in [
+            l[1:].strip().split(',')
+            for l in open(COLOR_SCHEME_FILE).readlines()
+            if len(l.strip()) > 0 and l.strip()[0] == '>'
+        ]
+    ]
+    if len(x) == 0:
+        return TEMPLATE_COLORS
+    else:
+        print(TEMPLATE_COLORS)
+        print("VS")
+        print(x[0]['color_replacements'])
+        return x[0]['color_replacements']
+
+
+def readColorSchemeFile_Themes():
+
     return [
         {
             'name': s[0],
@@ -65,7 +86,7 @@ def readColorSchemeFile():
         for s in [
             l.strip().split(',')
             for l in open(COLOR_SCHEME_FILE).readlines()
-            if l.strip()[0] != '#'
+            if len(l.strip()) > 0 and l.strip()[0] not in ['#', '>']
         ]
     ]
 

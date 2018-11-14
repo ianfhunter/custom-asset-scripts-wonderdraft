@@ -80,7 +80,7 @@ def genSVGUI():
         while mode_input not in ['y', 'n']:
             mode_input = input('Complete (Y) or Quick(N) Generation: ').lower()
 
-        if mode_input == 'y':
+        if mode_input == 'n':
             args.quick = True
 
     if args.prefix is None:
