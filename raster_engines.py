@@ -132,6 +132,7 @@ class rsvgRE(RasterEngine):
 
     def load(self, args):
         import subprocess as external
+        external.run(['rsvg-convert -v'])
         self.engine_lib = external
 
     def convert(self, svg_path, png_path):

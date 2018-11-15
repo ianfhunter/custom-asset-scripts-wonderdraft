@@ -41,7 +41,6 @@ def removeBaseFolder(path):
 
 
 def saveWrite(toWrite, path):
-    print("Write to: ", path)
     if not os.path.exists(os.path.dirname(path)):
         os.makedirs(os.path.dirname(path))
 
@@ -94,7 +93,8 @@ def readColorSchemeFile_Themes():
 def getCategory(folder, color_scheme_entry):
     design_name = color_scheme_entry['name']
     variant = color_scheme_entry['variant'].upper()
-    return f'{folder} {design_name} {variant}'
+    print(folder+"|"+design_name+"|"+variant)
+    return f'{folder}{design_name} {variant}'
 
 
 def file_seperator():

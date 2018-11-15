@@ -28,6 +28,7 @@ class ArgPasser:
                  tree_mode=True,
                  max_dim=-1,
                  engine=None,
+                 color_scheme=""
                  ):
         initEngineSupport(self)
         if engine is None:
@@ -37,6 +38,7 @@ class ArgPasser:
         self.prefix = prefix
         self.is_tree_mode = tree_mode
         self.max_dim = max_dim
+        self.color_scheme = color_scheme
 
 
 class ProgessTrackerThread(QtCore.QThread):
@@ -56,7 +58,7 @@ class ProgessTrackerThread(QtCore.QThread):
         progress = 0
         while progress < 100:
             sleep(0.1)
-            print("Progress: ", progress)
+            print("Progress: ", str(progress)+"%.")
             try:
                 with open(self.tracking_file) as f:
                     first_line = f.read()
@@ -67,6 +69,7 @@ class ProgessTrackerThread(QtCore.QThread):
 
             self.progressPercent.emit( {"perc": progress} )
 
+        print("Progress: 100%. Complete.")
         self.progressPercent.emit({"perc": 100, "complete":True})
 
         self.finished.emit()
@@ -78,23 +81,23 @@ class wonderdraftGUI(BaseWidget):
         super().__init__('Map Maker Accellerator - Wonderdraft PNG')
 
         #Definition of the forms fields
-        self._prefix = ControlText('File Prefix')
+        self._prefix = ControlText('File Prefix', value="~Currently Disabled~")
         self._outputmaxdim = ControlNumber('Dimension Limit')
+        self._dimdisclaimer = ControlLabel('(Not applicable for some engines)')
+
         self._quickmodebox  = ControlCheckBox('Quick Mode')
-        self._engine = ControlList('Engine')
+        # self._engine = ControlList('Engine')
+        self._engine = ControlCombo('Engine')
         initEngineSupport(ArgPasser())
 
         _, supported_engines, _ = getEngineSpecs()
-        print(supported_engines)
 
-        a = []
-        for x in supported_engines:
-            a.append([x.name])
+        for i, x in enumerate(supported_engines):
+            self._engine.add_item(x.name, x)
 
-        self._engine.value=a
-        self._symbolmode  = ControlCheckBox('Symbol Mode')
-        self._treemode  = ControlCheckBox('Tree Mode')
-
+        self._mode = ControlCombo('Output Mode')
+        for i, x in enumerate(["Symbol", "Tree"]):
+            self._mode.add_item(x, i)
 
         self._progress = ControlProgress('Coversion Progress')
         self._runbutton  = ControlButton('Generate PNGs')
@@ -103,10 +106,10 @@ class wonderdraftGUI(BaseWidget):
 
         #Define the organization of the Form Controls
         self._formset = [
-            '_prefix',
-            '_outputmaxdim',
+            # '_prefix',
+            ('_outputmaxdim', '_dimdisclaimer'),
             '_engine',
-            ('_symbolmode', '_treemode'),
+            '_mode',
             '_progress',
             '_runbutton'
         ]
@@ -120,7 +123,8 @@ class wonderdraftGUI(BaseWidget):
         a = ArgPasser(
                 prefix=self._prefix.value,
                 max_dim=mdim,
-                engine=selectEngine(self._engine.selected_row_index)
+                engine=self._engine.value,
+                tree_mode=self._mode.value == 1
             )
 
         thread = ProgessTrackerThread(PROGRESS_TRACKER_PNG_TMP_FILE)
@@ -144,23 +148,25 @@ class svgGUI(BaseWidget):
         super().__init__('Map Maker Accellerator - SVG Color Permuter')
 
         #Definition of the forms fields
-        self._prefix = ControlText('File Prefix')
+        self._prefix = ControlText('File Prefix', value="")
         self._color = ControlFile('Color Scheme File')
-        self._quickmodebox  = ControlCheckBox('Quick Mode')
+        self._quickmodebox  = ControlCheckBox('Quick Mode (Partial Generation)')
         self._runbutton  = ControlButton('Generate SVGs')
 
         self._estimated_time = ControlLabel('Estimated Time: XYZmins')
         self._progress = ControlProgress('Coversion Progress')
 
+        self._colortooltip = ControlLabel("(Blank=default)")
+
         self._runbutton.value = self.callFn
 
         #Define the organization of the Form Controls
         self._formset = [
-            '_prefix',
+            # '_prefix',
             '_color',
             '_quickmodebox',
 
-            '_estimated_time',
+            # '_estimated_time',
             '_progress',
             '_runbutton'
         ]
@@ -169,6 +175,7 @@ class svgGUI(BaseWidget):
 
         a=ArgPasser(
             prefix=self._prefix.value,
+            color_scheme=self._color.value
         )
 
         thread = ProgessTrackerThread(PROGRESS_TRACKER_SVG_TMP_FILE)
@@ -194,20 +201,25 @@ class mainGUI(BaseWidget):
     def __init__(self, *args, **kwargs):
         super().__init__('Map Maker Accellerator - Main Window')
 
+
+        self._text1 = ControlLabel('Please read the Wiki on Github for usage information. In future we try to have tooltips.', readonly=True, enabled=False)
+
         self._runbutton  = ControlButton('Color Scheme Applier')
         self._runbutton2  = ControlButton('SVG Conversion for Wonderdraft')
 
-        self._text = ControlLabel('Potential Future Options. We encourage your feedback on what to work on next!', readonly=True, enabled=False)
+        self._text2 = ControlLabel('Potential Future Options. We encourage your feedback on what to work on next!', readonly=True, enabled=False)
 
         self._runbutton3  = ControlButton('Color Scheme Designer', enabled=False)
         self._runbutton4  = ControlButton('Symbol Extractor', enabled=False)
         self._runbutton5  = ControlButton('Brush Convertor', enabled=False)
+        self._runbutton6  = ControlButton('City Formatter', enabled=False)
 
         #Define the organization of the Form Controls
         self._formset = [
+            '_text1',
             ('_runbutton', '_runbutton2'),
-            '_text',
-            ('_runbutton3', '_runbutton4', '_runbutton5')
+            '_text2',
+            ('_runbutton3', '_runbutton4', '_runbutton5', '_runbutton6')
         ]
 
         self._runbutton.value = self.launchSVG

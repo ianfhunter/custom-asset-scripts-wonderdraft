@@ -19,8 +19,12 @@ def generateSVGs(args, gui=False):
 
     if not gui:
         print("Processing permutations please wait... ")
+        
 
-    color_schemes = readColorSchemeFile_Themes()
+    if hasattr(args, 'color_scheme') and args.color_scheme is not "":
+        color_schemes = readColorSchemeFile_Themes(file=args.color_scheme)
+    else:
+        color_schemes = readColorSchemeFile_Themes()
 
     print("color_schemes",color_schemes)
 
