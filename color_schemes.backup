@@ -1,0 +1,9 @@
+# Optionally Define Colors to replace (default are pure R, G & B)
+> 639393,d4d2bd,3b7a69,757162
+
+# Color Scheme Name,Variation Letter,Color A ... Color Z
+Temperate,a,ff0000,00ff00,ff00ff,00ffff
+Temperate,b,aec9b3,48a16f,287359,fc00de
+Cold,a,f7f9fb,c2dbdf,71a2a6,fc00de
+Cold,b,8dfdff,48b8ba,07909f,fc00de
+Autumn,a,f48b53,f9c00f,ae1543,fc00de

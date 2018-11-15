@@ -42,6 +42,7 @@ def genWonderDraftUI():
         mode_input = 'invalid'
 
     # Mode of Operation
+
     while mode_input != 's' and mode_input != 't':
         mode_input = input('Operate in (S)ymbol mode or (T)ree mode? ').lower()
 
@@ -64,8 +65,6 @@ def genWonderDraftUI():
     else:
         args.max_dim = int(mode_input)
 
-
-
     return args
 
 
@@ -81,14 +80,37 @@ def genSVGUI():
         while mode_input not in ['y', 'n']:
             mode_input = input('Complete (Y) or Quick(N) Generation: ').lower()
 
-        if mode_input == 'y':
+        if mode_input == 'n':
             args.quick = True
 
+    if args.prefix is None:
+        prefix_request = input("Please enter the PREFIX for all new permutations: ")
+        print("You entered " + str(prefix_request) +
+            " as the PREFIX for all new permutations")
+    else:
+        prefix_request = args.prefix
+
+    args.prefix = prefix_request
 
     return args
 
 
-def selectEngine(args):
+possible_engines = None
+supported_engines = None
+unsupported_engines = None
+
+
+def getEngineSpecs():
+    global possible_engines
+    global supported_engines
+    global unsupported_engines
+    return possible_engines, supported_engines, unsupported_engines
+
+
+def initEngineSupport(args):
+    global possible_engines
+    global supported_engines
+    global unsupported_engines
 
     possible_engines = [
         cairoSVGRE(),
@@ -109,16 +131,24 @@ def selectEngine(args):
         except:
             unsupported_engines.append(e)
 
+
+def selectEnginePrompt(args):
+
+    choice = "N/A"
     print("Inactive Rasterizing Engines: ")
     for x in unsupported_engines:
         print("*", x.name)
-
-
     print("Available Rasterizing Engines: ")
-    choice = "N/A"
+
     while not is_number(choice) or int(choice) > len(supported_engines):
         for x in range(len(supported_engines)):
-            print("("+str(x)+")", supported_engines[x].name)
+            print("(" + str(x) + ")", supported_engines[x].name)
         choice = input('Please Select an engine: ')
+
+    return selectEngine(choice)
+
+
+def selectEngine(choice):
+    global supported_engines
 
     return supported_engines[int(choice)]

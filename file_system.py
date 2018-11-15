@@ -1,13 +1,7 @@
 import os
 import glob
 import platform
-
-TEMPLATE_DIR = './templates'
-SVG_DIR = './svg_output'
-SYMBOL_DIR = './symbols'
-TREE_DIR = './trees'
-COLOR_SCHEME_FILE = './color_schemes.txt'
-
+from config import *
 
 def createFolders():
     for x in [SVG_DIR, SYMBOL_DIR, TREE_DIR]:
@@ -47,8 +41,10 @@ def removeBaseFolder(path):
 
 
 def saveWrite(toWrite, path):
-
-    if not os.path.exists(os.path.dirname(path)):
+    d=False
+    if "/" in path or "\\" in path:
+        d=True
+    if not os.path.exists(os.path.dirname(path)) and d:
         os.makedirs(os.path.dirname(path))
 
     if toWrite is not None:
@@ -61,7 +57,28 @@ def ensurePopulated(path):
         print(path + " folder that should contain files is empty.")
 
 
-def readColorSchemeFile():
+def readColorSchemeFile_Colors(file=COLOR_SCHEME_FILE):
+    x = [
+        {
+            'color_replacements': s
+        }
+        for s in [
+            l[1:].strip().split(',')
+            for l in open(file).readlines()
+            if len(l.strip()) > 0 and l.strip()[0] == '>'
+        ]
+    ]
+    if len(x) == 0:
+        return TEMPLATE_COLORS
+    else:
+        print(TEMPLATE_COLORS)
+        print("VS")
+        print(x[0]['color_replacements'])
+        return x[0]['color_replacements']
+
+
+def readColorSchemeFile_Themes(file=COLOR_SCHEME_FILE):
+
     return [
         {
             'name': s[0],
@@ -70,8 +87,8 @@ def readColorSchemeFile():
         }
         for s in [
             l.strip().split(',')
-            for l in open(COLOR_SCHEME_FILE).readlines()
-            if l.strip()[0] != '#'
+            for l in open(file).readlines()
+            if len(l.strip()) > 0 and l.strip()[0] not in ['#', '>']
         ]
     ]
 
@@ -79,7 +96,8 @@ def readColorSchemeFile():
 def getCategory(folder, color_scheme_entry):
     design_name = color_scheme_entry['name']
     variant = color_scheme_entry['variant'].upper()
-    return f'{folder} {design_name} {variant}'
+    print(folder+"|"+design_name+"|"+variant)
+    return f'{folder}{design_name} {variant}'
 
 
 def file_seperator():
