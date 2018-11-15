@@ -7,3 +7,6 @@ This repository contains several programs aimed at making the cartographer's lif
 * Convert SVGs to Wonderdraft PNG 
 
 Please refer to the Wiki for full documentation
+
+## Attributions
+Icon made by [https://www.flaticon.com/authors/freepik] from www.flaticon.com and converted to .ico format
