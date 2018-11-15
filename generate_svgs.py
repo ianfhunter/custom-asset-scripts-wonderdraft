@@ -21,7 +21,9 @@ def generateSVGs(args, gui=False):
         print("Processing permutations please wait... ")
         
 
+    not_default_file = False
     if hasattr(args, 'color_scheme') and args.color_scheme is not "":
+        not_default_file = True
         color_schemes = readColorSchemeFile_Themes(file=args.color_scheme)
     else:
         color_schemes = readColorSchemeFile_Themes()
@@ -57,7 +59,10 @@ def generateSVGs(args, gui=False):
         # Read in the master SVG
         with open(os.path.join(fn)) as f:
             svg_in = f.read()
-            slot_colors = [t for t in readColorSchemeFile_Colors() if t in svg_in]
+            if not_default_file:
+                slot_colors = [t for t in readColorSchemeFile_Colors(file=args.color_scheme) if t in svg_in]
+            else:
+                slot_colors = [t for t in readColorSchemeFile_Colors() if t in svg_in]
             print("SLOT COLORS:", slot_colors)
             num_colors = len(slot_colors)
 
