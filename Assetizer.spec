@@ -9,9 +9,10 @@ visvis += [("C:\\Users\\ihunter\\AppData\\Roaming\\Python\\Python37\\site-packag
 visvis += [("C:\\Users\\ihunter\\AppData\\Roaming\\Python\\Python37\\site-packages\\pyforms_gui", "pyforms_gui")]
 visvis += [("C:\\Users\\ihunter\\AppData\\Roaming\\Python\\Python37\\site-packages\\pyforms", "pyforms")]
 visvis += [("C:\\Users\\ihunter\\AppData\\Roaming\\Python\\Python37\\site-packages\\confapp", "confapp")]
+visvis += [("style.css", ".")]
 
 # 'C:\\Users\\ihunter\\AppData\\Roaming\\Python\\Python37\\site-packages\\visvis\\'
-a = Analysis(['gui.py'],
+a = Analysis(['Assetizer.py'],
              pathex=['C:\\Users\\ihunter\\Documents\\GitHub\\custom-asset-scripts-wonderdraft'],
              binaries=[],
              datas=visvis,
@@ -30,18 +31,19 @@ exe = EXE(pyz,
           a.scripts,
           [],
           exclude_binaries=True,
-          name='gui',
+          name='Assetizer',
           debug=False,
           bootloader_ignore_signals=False,
           strip=False,
           upx=True,
-          console=True )
+          console=False,
+		  icon='ca_icon.ico')
 coll = COLLECT(exe,
                a.binaries,
                a.zipfiles,
                a.datas,
                strip=False,
                upx=True,
-               name='gui')
+               name='Assetizer')
 
 			   		 
