@@ -110,7 +110,7 @@ def generateSVGs(args, gui=False):
                 if args.quick and y > 0:
                     print("skup")
                     continue
-
+                    
                 svg_out = svg_in
                 for (t, z) in zip(slot_colors, perm):
                     svg_out = svg_out.replace(t, z)
