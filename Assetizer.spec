@@ -9,7 +9,7 @@ roamingAppData = os.getenv('APPDATA')
 repoFolder = os.path.dirname(os.path.abspath(os.getcwd()))
 
 
-print("FILES: ", os.listdir(roamingAppData + "\\Python\\Python37\\site-packages))
+print("FILES: ", os.listdir(roamingAppData + "\\Python\\Python37\\site-packages"))
 
 visvis = [(roamingAppData + "\\Python\\Python37\\site-packages\\visvis\\visvisResources", "visvisResources")]
 visvis += [(roamingAppData + "\\Python\\Python37\\site-packages\\visvis", "visvis")]
