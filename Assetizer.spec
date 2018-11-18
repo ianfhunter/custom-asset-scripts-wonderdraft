@@ -19,7 +19,7 @@ print("EXEC: ", execpath)
 
 
 print("THIS REPO: ", os.listdir(repoFolder+"\\custom-asset-scripts-wonderdraft"))
-print("THIS REPO: ", glob.glob(repoFolder+"\\custom-asset-scripts-wonderdraft\\dist+" + '/**/*.exe', recursive=True))
+print("THIS REPO: ", os.listdir(repoFolder+"\\custom-asset-scripts-wonderdraft\\dist"))
 
 if True:    # if Appveyor
     libFolder = "C:\\Python36-x64\\lib"
