@@ -6,6 +6,18 @@ from user_interface import *
 from tqdm import tqdm
 from config import *
 
+import lxml.etree as etree
+
+
+def stripBackground(file):
+    # For City maps mostly
+    dom1 = etree.parse(file)  # parse an XML file by name
+    a = dom1.xpath('//*[@id="background"]')
+    if(len(a) > 0):
+        p = a[0].getparent()
+        p.remove(a[0])
+        print("Stripping Background from image: ", file)
+        dom1.write(file, pretty_print=True)
 
 
 def generateSVGs(args, gui=False):
@@ -19,7 +31,7 @@ def generateSVGs(args, gui=False):
 
     if not gui:
         print("Processing permutations please wait... ")
-        
+
 
     not_default_file = False
     if hasattr(args, 'color_scheme') and args.color_scheme is not "":
@@ -28,7 +40,7 @@ def generateSVGs(args, gui=False):
     else:
         color_schemes = readColorSchemeFile_Themes()
 
-    print("color_schemes",color_schemes)
+    print("color_schemes", color_schemes)
 
     template_filenames = getAllFilesInDir(".svg", TEMPLATE_DIR)
 
@@ -56,6 +68,10 @@ def generateSVGs(args, gui=False):
             #     multi_symbol = True
         """
 
+
+        print("Strip Background")
+        stripBackground(os.path.join(fn))
+
         # Read in the master SVG
         with open(os.path.join(fn)) as f:
             svg_in = f.read()
@@ -68,10 +84,6 @@ def generateSVGs(args, gui=False):
 
 
         for i, x in enumerate(color_schemes):
-
-            if args.quick and i > 0:
-                print("skup")
-                continue
 
             p_num = 1
 
@@ -93,7 +105,12 @@ def generateSVGs(args, gui=False):
             print("color_permutations:", color_permutations)
 
             # Generate a new SVG for each permutation
-            for perm in color_permutations:
+            for y, perm in enumerate(color_permutations):
+
+                if args.quick and y > 0:
+                    print("skup")
+                    continue
+                    
                 svg_out = svg_in
                 for (t, z) in zip(slot_colors, perm):
                     svg_out = svg_out.replace(t, z)
