@@ -27,7 +27,7 @@ after_test:
   - "%PYTHON%\\python.exe -m PyInstaller Assetizer.spec --distpath ./dist"
 
 artifacts:
-  - path: dist\*
+  - path: dist\\Assetizer
 
 
 #on_success:
