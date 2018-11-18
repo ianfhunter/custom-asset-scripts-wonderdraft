@@ -1,4 +1,4 @@
-**Current Status**: [![Build Status](https://travis-ci.com/ianfhunter/custom-asset-scripts-wonderdraft.svg?branch=master)](https://travis-ci.com/ianfhunter/custom-asset-scripts-wonderdraft)
+**Current Status**: [![Build Status - Unix](https://travis-ci.com/ianfhunter/custom-asset-scripts-wonderdraft.svg?branch=master)](https://travis-ci.com/ianfhunter/custom-asset-scripts-wonderdraft) [![Build status - Windows](https://ci.appveyor.com/api/projects/status/j8998h8y01415xx3/branch/master?svg=true)](https://ci.appveyor.com/project/ianfhunter/custom-asset-scripts-wonderdraft/branch/master)
 
 # Accelerated Assets for Wonderdraft
 This repository contains several programs aimed at making the cartographer's life easier - or at least those cartographers that use the map making tool WonderDraft.
