@@ -2,18 +2,21 @@
 
 block_cipher = None
 
+import os
+roamingAppData = os.getenv('APPDATA')
+repoFolder = os.path.dirname(os.path.abspath(__file__))
 
-visvis = [("C:\\Users\\ihunter\\AppData\\Roaming\\Python\\Python37\\site-packages\\visvis\\visvisResources", "visvisResources")]
-visvis += [("C:\\Users\\ihunter\\AppData\\Roaming\\Python\\Python37\\site-packages\\visvis", "visvis")]
-visvis += [("C:\\Users\\ihunter\\AppData\\Roaming\\Python\\Python37\\site-packages\\PyQt5", "PyQt5")]
-visvis += [("C:\\Users\\ihunter\\AppData\\Roaming\\Python\\Python37\\site-packages\\pyforms_gui", "pyforms_gui")]
-visvis += [("C:\\Users\\ihunter\\AppData\\Roaming\\Python\\Python37\\site-packages\\pyforms", "pyforms")]
-visvis += [("C:\\Users\\ihunter\\AppData\\Roaming\\Python\\Python37\\site-packages\\confapp", "confapp")]
+
+visvis = [(roamingAppDataPython + "\\Python37\\site-packages\\visvis\\visvisResources", "visvisResources")]
+visvis += [(roamingAppDataPython + "\\Python37\\site-packages\\visvis", "visvis")]
+visvis += [(roamingAppDataPython + "\\Python37\\site-packages\\PyQt5", "PyQt5")]
+visvis += [(roamingAppDataPython + "\\Python37\\site-packages\\pyforms_gui", "pyforms_gui")]
+visvis += [(roamingAppDataPython + "\\Python37\\site-packages\\pyforms", "pyforms")]
+visvis += [(roamingAppDataPython + "\\Python37\\site-packages\\confapp", "confapp")]
 visvis += [("style.css", ".")]
 
-# 'C:\\Users\\ihunter\\AppData\\Roaming\\Python\\Python37\\site-packages\\visvis\\'
 a = Analysis(['Assetizer.py'],
-             pathex=['C:\\Users\\ihunter\\Documents\\GitHub\\custom-asset-scripts-wonderdraft'],
+             pathex=[repoFolder],
              binaries=[],
              datas=visvis,
              hiddenimports=[''],
@@ -24,7 +27,7 @@ a = Analysis(['Assetizer.py'],
              win_private_assemblies=False,
              cipher=block_cipher,
              noarchive=False)
-			 
+
 pyz = PYZ(a.pure, a.zipped_data,
              cipher=block_cipher)
 exe = EXE(pyz,
@@ -46,4 +49,3 @@ coll = COLLECT(exe,
                upx=True,
                name='Assetizer')
 
-			   		 
