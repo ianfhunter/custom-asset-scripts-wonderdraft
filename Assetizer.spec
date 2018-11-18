@@ -17,6 +17,9 @@ print("ROAMING FILES: ", roamingAppData)
 print("LOCAL FILES: ", localAppData)
 print("EXEC: ", execpath)
 
+
+print("THIS REPO: ", os.listdir(repoFolder))
+
 if True:    # if Appveyor
     libFolder = "C:\\Python36-x64\\lib"
 else:
