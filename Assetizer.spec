@@ -6,7 +6,7 @@ import os, sys
 #roamingAppData = sys.executable
 
 #import site
-packages = site.getsitepackages()[0]
+#packages = site.getsitepackages()[0]
 
 localAppData = os.getenv('LOCALAPPDATA')
 roamingAppData = os.getenv('APPDATA')

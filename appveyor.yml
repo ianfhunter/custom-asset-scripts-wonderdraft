@@ -5,7 +5,7 @@ environment:
 
 install:
   # We need wheel installed to build wheels
-  - "SET PATH='%PYTHON%;%PATH%'"
+  - "SET PATH='%PYTHON%\\Scripts;%PATH%'"
   - "%PYTHON%\\python.exe -m pip install wheel"
   - "%PYTHON%\\python.exe -m pip install -r requirements.txt"
   - "%PYTHON%\\python.exe -m pip install PyInstaller"
