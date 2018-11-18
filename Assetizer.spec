@@ -3,7 +3,10 @@
 block_cipher = None
 
 import os, sys
-roamingAppData = sys.executable
+#roamingAppData = sys.executable
+
+import site;
+roamingAppData = site.getsitepackages()[0]
 
 repoFolder = os.path.dirname(os.path.abspath(os.getcwd()))
 
