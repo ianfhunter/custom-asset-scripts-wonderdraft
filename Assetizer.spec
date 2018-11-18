@@ -3,7 +3,7 @@
 block_cipher = None
 
 import os, sys
-#roamingAppData = sys.executable
+execpath = sys.executable
 
 #import site
 #packages = site.getsitepackages()[0]
@@ -13,16 +13,23 @@ roamingAppData = os.getenv('APPDATA')
 
 repoFolder = os.path.dirname(os.path.abspath(os.getcwd()))
 
-print("packages FILES: ", os.listdir(roamingAppData))
-print("ROAMING FILES: ", os.listdir(roamingAppData))
-print("LOCAL FILES: ", os.listdir(localAppData))
+print("ROAMING FILES: ", roamingAppData)
+print("LOCAL FILES: ", localAppData)
+print("EXEC: ", execpath)
 
-visvis = [(roamingAppData + "\\Python\\Python37\\site-packages\\visvis\\visvisResources", "visvisResources")]
-visvis += [(roamingAppData + "\\Python\\Python37\\site-packages\\visvis", "visvis")]
-visvis += [(roamingAppData + "\\Python\\Python37\\site-packages\\PyQt5", "PyQt5")]
-visvis += [(roamingAppData + "\\Python\\Python37\\site-packages\\pyforms_gui", "pyforms_gui")]
-visvis += [(roamingAppData + "\\Python\\Python37\\site-packages\\pyforms", "pyforms")]
-visvis += [(roamingAppData + "\\Python\\Python37\\site-packages\\confapp", "confapp")]
+if True:    # if Appveyor
+    libFolder = "C:\\Python36-x64\\lib"
+else:
+    libFolder = roamingAppData + "\\Python\\Python37"
+
+
+
+visvis = [(libFolder + "\\site-packages\\visvis\\visvisResources", "visvisResources")]
+visvis += [(libFolder + "\\site-packages\\visvis", "visvis")]
+visvis += [(libFolder + "\\site-packages\\PyQt5", "PyQt5")]
+visvis += [(libFolder + "\\site-packages\\pyforms_gui", "pyforms_gui")]
+visvis += [(libFolder + "\\site-packages\\pyforms", "pyforms")]
+visvis += [(libFolder + "\\site-packages\\confapp", "confapp")]
 visvis += [("style.css", ".")]
 
 a = Analysis(['Assetizer.py'],
