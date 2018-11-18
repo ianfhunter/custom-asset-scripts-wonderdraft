@@ -8,7 +8,7 @@ install:
   - "SET PATH='%PYTHON%;%PATH%'"
   - "%PYTHON%\\python.exe -m pip install wheel"
   - "%PYTHON%\\python.exe -m pip install -r requirements.txt"
-  - "%PYTHON%\\python.exe -m pip install pyinstaller"
+  - "%PYTHON%\\python.exe -m pip install PyInstaller"
 
 build: off
 
@@ -27,7 +27,7 @@ after_test:
   # Again, you only need build.cmd if you're building C extensions for
   # 64-bit Python 3.3/3.4. And you need to use %PYTHON% to get the correct
   # interpreter
-  - "%PYTHON%\\python.exe -m pyinstaller Assetizer.spec "
+  - "%PYTHON%\\python.exe -m PyInstaller Assetizer.spec "
 
 artifacts:
   # bdist_wheel puts your built wheel in the dist directory
