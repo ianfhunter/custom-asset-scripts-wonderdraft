@@ -3,8 +3,7 @@
 block_cipher = None
 
 import os, sys
-roamingAppData = os.getenv('APPDATA')
-
+roamingAppData = sys.executable
 
 repoFolder = os.path.dirname(os.path.abspath(os.getcwd()))
 
