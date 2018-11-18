@@ -9,6 +9,7 @@ install:
   - "%PYTHON%\\python.exe -m pip install wheel"
   - "%PYTHON%\\python.exe -m pip install -r requirements.txt"
   - "%PYTHON%\\python.exe -m pip install PyInstaller"
+  - "%PYTHON%\\python.exe -m pip install visvis"
 
 build: off
 
