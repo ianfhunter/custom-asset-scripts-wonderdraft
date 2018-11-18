@@ -9,12 +9,12 @@ roamingAppData = os.getenv('APPDATA')
 repoFolder = os.path.dirname(os.path.abspath(os.getcwd()))
 
 
-visvis = [(roamingAppDataPython + "\\Python37\\site-packages\\visvis\\visvisResources", "visvisResources")]
-visvis += [(roamingAppDataPython + "\\Python37\\site-packages\\visvis", "visvis")]
-visvis += [(roamingAppDataPython + "\\Python37\\site-packages\\PyQt5", "PyQt5")]
-visvis += [(roamingAppDataPython + "\\Python37\\site-packages\\pyforms_gui", "pyforms_gui")]
-visvis += [(roamingAppDataPython + "\\Python37\\site-packages\\pyforms", "pyforms")]
-visvis += [(roamingAppDataPython + "\\Python37\\site-packages\\confapp", "confapp")]
+visvis = [(roamingAppData + "\\Python\\Python37\\site-packages\\visvis\\visvisResources", "visvisResources")]
+visvis += [(roamingAppData + "\\Python\\Python37\\site-packages\\visvis", "visvis")]
+visvis += [(roamingAppData + "\\Python\\Python37\\site-packages\\PyQt5", "PyQt5")]
+visvis += [(roamingAppData + "\\Python\\Python37\\site-packages\\pyforms_gui", "pyforms_gui")]
+visvis += [(roamingAppData + "\\Python\\Python37\\site-packages\\pyforms", "pyforms")]
+visvis += [(roamingAppData + "\\Python\\Python37\\site-packages\\confapp", "confapp")]
 visvis += [("style.css", ".")]
 
 a = Analysis(['Assetizer.py'],
