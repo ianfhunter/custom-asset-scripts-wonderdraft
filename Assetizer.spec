@@ -6,14 +6,16 @@ import os, sys
 #roamingAppData = sys.executable
 
 #import site
-#roamingAppData = site.getsitepackages()[0]
+packages = site.getsitepackages()[0]
 
-roamingAppData = os.getenv('LOCALAPPDATA')
+localAppData = os.getenv('LOCALAPPDATA')
+roamingAppData = os.getenv('APPDATA')
 
 repoFolder = os.path.dirname(os.path.abspath(os.getcwd()))
 
-
-print("FILES: ", os.listdir(roamingAppData + "\\Python\\Python37\\site-packages"))
+print("packages FILES: ", os.listdir(roamingAppData))
+print("ROAMING FILES: ", os.listdir(roamingAppData))
+print("LOCAL FILES: ", os.listdir(localAppData))
 
 visvis = [(roamingAppData + "\\Python\\Python37\\site-packages\\visvis\\visvisResources", "visvisResources")]
 visvis += [(roamingAppData + "\\Python\\Python37\\site-packages\\visvis", "visvis")]
