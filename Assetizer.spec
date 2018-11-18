@@ -5,13 +5,8 @@ block_cipher = None
 import os, sys
 roamingAppData = os.getenv('APPDATA')
 
-if getattr(sys, 'frozen', False):
-    # If the application is run as a bundle, the pyInstaller bootloader
-    # extends the sys module by a flag frozen=True and sets the app
-    # path into variable _MEIPASS'.
-    repoFolder = sys._MEIPASS
-else:
-    repoFolder = os.path.dirname(os.path.abspath(__file__))
+
+repoFolder = os.path.dirname(os.path.abspath(os.getcwd()))
 
 
 visvis = [(roamingAppDataPython + "\\Python37\\site-packages\\visvis\\visvisResources", "visvisResources")]
