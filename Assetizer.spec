@@ -2,18 +2,42 @@
 
 block_cipher = None
 
+import os, sys
+execpath = sys.executable
 
-visvis = [("C:\\Users\\ihunter\\AppData\\Roaming\\Python\\Python37\\site-packages\\visvis\\visvisResources", "visvisResources")]
-visvis += [("C:\\Users\\ihunter\\AppData\\Roaming\\Python\\Python37\\site-packages\\visvis", "visvis")]
-visvis += [("C:\\Users\\ihunter\\AppData\\Roaming\\Python\\Python37\\site-packages\\PyQt5", "PyQt5")]
-visvis += [("C:\\Users\\ihunter\\AppData\\Roaming\\Python\\Python37\\site-packages\\pyforms_gui", "pyforms_gui")]
-visvis += [("C:\\Users\\ihunter\\AppData\\Roaming\\Python\\Python37\\site-packages\\pyforms", "pyforms")]
-visvis += [("C:\\Users\\ihunter\\AppData\\Roaming\\Python\\Python37\\site-packages\\confapp", "confapp")]
+#import site
+#packages = site.getsitepackages()[0]
+
+localAppData = os.getenv('LOCALAPPDATA')
+roamingAppData = os.getenv('APPDATA')
+
+repoFolder = os.path.dirname(os.path.abspath(os.getcwd()))
+
+print("ROAMING FILES: ", roamingAppData)
+print("LOCAL FILES: ", localAppData)
+print("EXEC: ", execpath)
+
+
+print("THIS REPO: ", os.listdir(repoFolder+"\\custom-asset-scripts-wonderdraft"))
+print("THIS REPO: ", os.listdir(repoFolder+"\\custom-asset-scripts-wonderdraft\\dist"))
+
+if True:    # if Appveyor
+    libFolder = "C:\\Python36-x64\\lib"
+else:
+    libFolder = roamingAppData + "\\Python\\Python37"
+
+
+
+visvis = [(libFolder + "\\site-packages\\visvis\\visvisResources", "visvisResources")]
+visvis += [(libFolder + "\\site-packages\\visvis", "visvis")]
+visvis += [(libFolder + "\\site-packages\\PyQt5", "PyQt5")]
+visvis += [(libFolder + "\\site-packages\\pyforms_gui", "pyforms_gui")]
+visvis += [(libFolder + "\\site-packages\\pyforms", "pyforms")]
+visvis += [(libFolder + "\\site-packages\\confapp", "confapp")]
 visvis += [("style.css", ".")]
 
-# 'C:\\Users\\ihunter\\AppData\\Roaming\\Python\\Python37\\site-packages\\visvis\\'
 a = Analysis(['Assetizer.py'],
-             pathex=['C:\\Users\\ihunter\\Documents\\GitHub\\custom-asset-scripts-wonderdraft'],
+             pathex=[repoFolder],
              binaries=[],
              datas=visvis,
              hiddenimports=[''],
@@ -24,7 +48,7 @@ a = Analysis(['Assetizer.py'],
              win_private_assemblies=False,
              cipher=block_cipher,
              noarchive=False)
-			 
+
 pyz = PYZ(a.pure, a.zipped_data,
              cipher=block_cipher)
 exe = EXE(pyz,
@@ -46,4 +70,3 @@ coll = COLLECT(exe,
                upx=True,
                name='Assetizer')
 
-			   		 

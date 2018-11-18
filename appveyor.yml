@@ -1,0 +1,36 @@
+environment:
+
+  matrix:
+    - PYTHON: "C:\\Python36-x64"
+
+install:
+  # We need wheel installed to build wheels
+  - "SET PATH='%PYTHON%\\Scripts;%PATH%'"
+  - "%PYTHON%\\python.exe -m pip install wheel"
+  - "%PYTHON%\\python.exe -m pip install -r requirements.txt"
+  - "%PYTHON%\\python.exe -m pip install PyInstaller"
+  - "%PYTHON%\\python.exe -m pip install visvis PyQt5 tornado"
+
+build: off
+
+test_script:
+  # Put your test command here.
+  # Note that you must use the environment variable %PYTHON% to refer to
+  # the interpreter you're using - Appveyor does not do anything special
+  # to put the Python version you want to use on PATH.
+  - "%PYTHON%\\python.exe test.py"
+
+after_test:
+  # This step builds your wheels.
+  # You need to use %PYTHON% to get the correct
+  # interpreter
+  - "%PYTHON%\\python.exe -m PyInstaller Assetizer.spec --distpath ./dist"
+
+artifacts:
+  - path: dist\Assetizer
+
+
+#on_success:
+#  You can use this step to upload your artifacts to a public website.
+#  See Appveyor's documentation for more details. Or you can simply
+#  access your wheels from the Appveyor "artifacts" tab for your build
