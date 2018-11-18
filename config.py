@@ -1,4 +1,5 @@
 TEMPLATE_DIR = './templates'
+TEST_DIR = './test'
 SVG_DIR = './svg_output'
 SYMBOL_DIR = './symbols'
 TREE_DIR = './trees'

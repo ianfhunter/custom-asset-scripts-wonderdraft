@@ -28,7 +28,7 @@ def generateSVGs(args, gui=False):
     else:
         color_schemes = readColorSchemeFile_Themes()
 
-    print("color_schemes",color_schemes)
+    print("color_schemes", color_schemes)
 
     template_filenames = getAllFilesInDir(".svg", TEMPLATE_DIR)
 
