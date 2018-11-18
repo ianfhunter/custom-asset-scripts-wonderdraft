@@ -42,8 +42,7 @@ def generateSVGs(args, gui=False):
 
     print("color_schemes", color_schemes)
 
-    # template_filenames = getAllFilesInDir(".svg", TEMPLATE_DIR)
-    template_filenames = getAllFilesInDir(".svg", TEST_DIR)
+    template_filenames = getAllFilesInDir(".svg", TEMPLATE_DIR)
 
     # For each of the template files
     if gui:
