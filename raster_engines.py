@@ -60,7 +60,7 @@ class imageMagickRE(RasterEngine):
         import subprocess as external
         self.engine_lib = external
         self.max_dim = str(args.max_dim)
-        if not os.path.isdir(PATH_TO_IMAGEMAGICK):
+        if not os.path.isfile(PATH_TO_IMAGEMAGICK):
             raise Exception
 
     def convert(self, svg_path, png_path):
@@ -153,7 +153,7 @@ class inkscapeRE(RasterEngine):
     def load(self, args):
         import subprocess as external
         self.engine_lib = external
-        if not os.path.isdir(PATH_TO_INKSCAPE):
+        if not os.path.isfile(PATH_TO_INKSCAPE):
             raise Exception
 
     def convert(self, svg_path, png_path):
