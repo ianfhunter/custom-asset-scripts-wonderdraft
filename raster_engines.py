@@ -6,9 +6,7 @@ import glob
 
 from pathlib import Path
 
-PATH_TO_IMAGEMAGICK = r'C:\Program Files\ImageMagick-7.0.8-Q16\magick.exe'
-PATH_TO_INKSCAPE = r'C:\Program Files\Inkscape\inkscape.com'
-
+from config import PATH_TO_IMAGEMAGICK, PATH_TO_INKSCAPE 
 
 
 def getEngine(selection, args):
