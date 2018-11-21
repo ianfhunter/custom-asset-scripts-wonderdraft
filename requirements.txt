@@ -2,3 +2,4 @@ tqdm
 pycairo ; platform_system != 'Windows'
 svglib==0.9.0b
 pyforms
+yaml
