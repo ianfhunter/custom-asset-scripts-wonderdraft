@@ -11,16 +11,6 @@ from tqdm import tqdm
 from config import *
 
 def generateWonderDraftSymbols(args, gui=False):
-    # if platform.system() == 'Windows':
-    #     RASTER_ENGINE = 'INKSCAPE'
-    #     RASTER_ENGINE = 'SVGLIB'
-    #     RASTER_ENGINE = 'IMAGEMAGICK'
-    # else:
-    #     RASTER_ENGINE = 'CAIROSVG'
-    #     RASTER_ENGINE = 'RSVG'
-    #     # RASTER_ENGINE = 'CAIRO'
-    #     #RASTER_ENGINE = 'SVGLIB'
-
 
     createFolders()
 

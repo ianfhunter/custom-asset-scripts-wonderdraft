@@ -29,7 +29,10 @@ def getEngine(selection, args):
 
 class RasterEngine():
     def __init__(self):
-        pass
+        self.max_dim = 0
+
+    def setMaxDim(self, value):
+        self.max_dim = value
 
     def convert(self, svg_path, png_path):
         # print(svg_path , "->", png_path)
@@ -47,7 +50,11 @@ class cairoSVGRE(RasterEngine):
         if platform.system() == 'Windows':
             png_path = escape_path(png_path)
             svg_path = escape_path(svg_path)
-        self.engine_lib.svg2png(url=svg_path, write_to=png_path)
+
+        if self.max_dim != 0:
+            self.engine_lib.svg2png(url=svg_path, write_to=png_path, parent_width=self.max_dim, parent_height=self.max_dim)
+        else:
+            self.engine_lib.svg2png(url=svg_path, write_to=png_path)
 
 
 class imageMagickRE(RasterEngine):
