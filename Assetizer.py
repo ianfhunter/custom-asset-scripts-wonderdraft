@@ -28,7 +28,8 @@ class ArgPasser:
                  tree_mode=True,
                  max_dim=-1,
                  engine=None,
-                 file=""
+                 file="",
+                 folder=""
                  ):
         initEngineSupport(self)
         if engine is None:
@@ -39,6 +40,7 @@ class ArgPasser:
         self.is_tree_mode = tree_mode
         self.max_dim = max_dim
         self.file = file
+        self.folder = folder
 
 class ProgessTrackerThread(QtCore.QThread):
 
@@ -140,12 +142,11 @@ class wonderdraftGUI(BaseWidget):
         super().__init__('Map Maker Accellerator - Wonderdraft PNG')
 
         #Definition of the forms fields
-        self._prefix = ControlText('File Prefix', value="~Currently Disabled~")
-        self._outputmaxdim = ControlNumber('Dimension Limit', minimum=0, maximum=2048)
+        # self._prefix = ControlText('File Prefix', value="~Currently Disabled~")
+        self._target = ControlDir('Folder to Rasterize')
+        self._outputmaxdim = ControlNumber('Max Output Size', minimum=0, maximum=2048, default=800)
         self._dimdisclaimer = ControlLabel('(Not applicable for some engines)')
 
-        self._quickmodebox  = ControlCheckBox('Quick Mode')
-        # self._engine = ControlList('Engine')
         self._engine = ControlCombo('Engine')
         initEngineSupport(ArgPasser())
 
@@ -154,9 +155,7 @@ class wonderdraftGUI(BaseWidget):
         for i, x in enumerate(supported_engines):
             self._engine.add_item(x.name, x)
 
-        self._mode = ControlCombo('Output Mode')
-        for i, x in enumerate(["Symbol", "Tree"]):
-            self._mode.add_item(x, i)
+        self._flatten  = ControlCheckBox("No subfolders")
 
         self._progress = ControlProgress('Conversion Progress')
         self._runbutton  = ControlButton('Generate PNGs')
@@ -166,9 +165,10 @@ class wonderdraftGUI(BaseWidget):
         #Define the organization of the Form Controls
         self._formset = [
             # '_prefix',
+            '_target',
             ('_outputmaxdim', '_dimdisclaimer'),
             '_engine',
-            '_mode',
+            '_flatten',
             '_progress',
             '_runbutton'
         ]
@@ -180,10 +180,10 @@ class wonderdraftGUI(BaseWidget):
             mdim = self._outputmaxdim.value
 
         a = ArgPasser(
-                prefix=self._prefix.value,
+                folder=self._target.value,
                 max_dim=mdim,
+                tree_mode=not(self._flatten.value),
                 engine=self._engine.value,
-                tree_mode=self._mode.value == 1
             )
 
         thread = ProgessTrackerThread(PROGRESS_TRACKER_PNG_TMP_FILE)
@@ -260,9 +260,9 @@ class mainGUI(BaseWidget):
 
         self._text1 = ControlLabel('Please read the Wiki on Github for usage information. In future we try to have tooltips.', readonly=True, enabled=False)
 
-        self._runbutton  = ControlButton('Color Scheme Applier')
-        self._runbutton2  = ControlButton('SVG Conversion for Wonderdraft')
-        self._runbutton3  = ControlButton('Ready City Maps for Import')
+        self._runbutton  = ControlButton('Apply Themes for Trees + Other Brushes')
+        self._runbutton3  = ControlButton('Apply Themes for City Maps + Other Symbols')
+        self._runbutton2  = ControlButton('Convert for Wonderdraft')
 
         self._text2 = ControlLabel('Potential Future Options. We encourage your feedback on what to work on next!', readonly=True, enabled=False)
 
@@ -274,7 +274,8 @@ class mainGUI(BaseWidget):
         #Define the organization of the Form Controls
         self._formset = [
             '_text1',
-            ('_runbutton', '_runbutton2', '_runbutton3'),
+            ('_runbutton', '_runbutton3'),
+            '_runbutton2',
             '_text2',
             ('_runbutton4', '_runbutton5', '_runbutton6')
         ]
