@@ -160,7 +160,15 @@ def stripBackground(file):
         dom1.write(file, pretty_print=True)
 
 
-def replaceColor(f, old, new, amount=0):
+def replaceColor(f, old, new, amount=0, debug=False):
     colorMatch = re.compile(old, re.IGNORECASE)
+
+    if debug:
+        iterator = re.finditer(colorMatch, f)
+        count = 0
+        for match in iterator:
+            count +=1
+        print(count, "matches")
+
     new_f = colorMatch.sub(new, f, amount)
     return new_f

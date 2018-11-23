@@ -7,7 +7,6 @@ TREE_DIR = './trees'
 COLOR_SCHEME_FILE = './color_schemes.txt'
 THEME_FILE = './map_themes.yml'
 
-
 TEMPLATE_COLORS = ['cf211b', '64c93f', '4b90e5']
 
 PROGRESS_TRACKER_SVG_TMP_FILE = ".svgprogress"
