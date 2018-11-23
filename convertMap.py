@@ -118,7 +118,7 @@ def generateMapVariants(args, gui=False):
                             print("Err: Unsupported Type in Theme")
                             quit()
 
-                        saveWrite(svg_out, new_path)
+                    saveWrite(svg_out, new_path)
                 else:
                     saveWrite(svg_out, new_path)
                     
