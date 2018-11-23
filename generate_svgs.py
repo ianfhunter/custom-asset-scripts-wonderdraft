@@ -6,21 +6,10 @@ from user_interface import *
 from tqdm import tqdm
 from config import *
 
-import lxml.etree as etree
 
 
-def stripBackground(file):
-    # For City maps mostly
-    dom1 = etree.parse(file)  # parse an XML file by name
-    a = dom1.xpath('//*[@id="background"]')
-    if(len(a) > 0):
-        p = a[0].getparent()
-        p.remove(a[0])
-        print("Stripping Background from image: ", file)
-        dom1.write(file, pretty_print=True)
 
-
-def generateSVGs(args, gui=False):
+def generateSVGs(args, gui=False, replace_stroke=False):
 
     if not gui:
         print("Initial variables have been created!")
@@ -34,9 +23,9 @@ def generateSVGs(args, gui=False):
 
 
     not_default_file = False
-    if hasattr(args, 'color_scheme') and args.color_scheme is not "":
+    if hasattr(args, 'file') and args.file is not "":
         not_default_file = True
-        color_schemes = readColorSchemeFile_Themes(file=args.color_scheme)
+        color_schemes = readColorSchemeFile_Themes(file=args.file)
     else:
         color_schemes = readColorSchemeFile_Themes()
 
@@ -75,11 +64,13 @@ def generateSVGs(args, gui=False):
         # Read in the master SVG
         with open(os.path.join(fn)) as f:
             svg_in = f.read()
+            matcher = svg_in.lower()
+
             if not_default_file:
-                slot_colors = [t for t in readColorSchemeFile_Colors(file=args.color_scheme) if t in svg_in]
+                slot_colors = [t for t in readColorSchemeFile_Colors(file=args.file) if t.lower() in matcher]
             else:
-                slot_colors = [t for t in readColorSchemeFile_Colors() if t in svg_in]
-            print("SLOT COLORS:", slot_colors)
+                slot_colors = [t for t in readColorSchemeFile_Colors() if t.lower() in matcher]
+            # print("SLOT COLORS:", slot_colors)
             num_colors = len(slot_colors)
 
 
@@ -107,13 +98,17 @@ def generateSVGs(args, gui=False):
             # Generate a new SVG for each permutation
             for y, perm in enumerate(color_permutations):
 
-                if args.quick and y > 0:
-                    print("skup")
+                if args.quick and y > 0 :
+                    print("skip")
                     continue
                     
                 svg_out = svg_in
-                for (t, z) in zip(slot_colors, perm):
-                    svg_out = svg_out.replace(t, z)
+                for (z, t) in zip(slot_colors, perm):
+                    print("Replace ",z, "with", t)
+                    # svg_out = svg_out.replace(t, z)
+                    colorMatch = re.compile(z, re.IGNORECASE)
+                    svg_out = colorMatch.sub(t, svg_out)
+
 
                 # Detect if MultiSymbol or not
                 basefile = getFileName(fn, no_ext=True)

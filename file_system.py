@@ -2,6 +2,10 @@ import os
 import glob
 import platform
 from config import *
+import yaml
+import lxml.etree as etree
+import re
+
 
 def createFolders():
     for x in [SVG_DIR, SYMBOL_DIR, TREE_DIR]:
@@ -68,13 +72,12 @@ def readColorSchemeFile_Colors(file=COLOR_SCHEME_FILE):
             if len(l.strip()) > 0 and l.strip()[0] == '>'
         ]
     ]
+
     if len(x) == 0:
         return TEMPLATE_COLORS
     else:
-        print(TEMPLATE_COLORS)
-        print("VS")
-        print(x[0]['color_replacements'])
-        return x[0]['color_replacements']
+        print("Colors Found: ", x[0]['color_replacements'])
+        return [z.strip() for z in x[0]['color_replacements']]
 
 
 def readColorSchemeFile_Themes(file=COLOR_SCHEME_FILE):
@@ -91,6 +94,17 @@ def readColorSchemeFile_Themes(file=COLOR_SCHEME_FILE):
             if len(l.strip()) > 0 and l.strip()[0] not in ['#', '>']
         ]
     ]
+
+def parseThemeFile(file=THEME_FILE):
+
+    with open(THEME_FILE, 'r') as stream:
+        try:
+            return yaml.load(stream)
+        except yaml.YAMLError as exc:
+            print("Theme File Parse Error")
+            quit()
+
+
 
 
 def getCategory(folder, color_scheme_entry):
@@ -133,3 +147,20 @@ def splitPath(path, no_cat=False):
         s = removeBaseFolder(subdir)
 
         return x, category, s
+
+
+def stripBackground(file):
+    # For City maps mostly
+    dom1 = etree.parse(file)  # parse an XML file by name
+    a = dom1.xpath('//*[@id="background"]')
+    if(len(a) > 0):
+        p = a[0].getparent()
+        p.remove(a[0])
+        print("Stripping Background from image: ", file)
+        dom1.write(file, pretty_print=True)
+
+
+def replaceColor(f, old, new, amount=0):
+    colorMatch = re.compile(old, re.IGNORECASE)
+    new_f = colorMatch.sub(new, f, amount)
+    return new_f

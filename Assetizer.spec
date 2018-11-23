@@ -36,6 +36,8 @@ visvis += [(libFolder + "\\site-packages\\pyforms", "pyforms")]
 visvis += [(libFolder + "\\site-packages\\confapp", "confapp")]
 visvis += [("style.css", ".")]
 
+exclusion = ['django']
+
 a = Analysis(['Assetizer.py'],
              pathex=[repoFolder],
              binaries=[],
@@ -43,7 +45,7 @@ a = Analysis(['Assetizer.py'],
              hiddenimports=[''],
              hookspath=[],
              runtime_hooks=[],
-             excludes=[],
+             excludes=exclusion,
              win_no_prefer_redirects=False,
              win_private_assemblies=False,
              cipher=block_cipher,

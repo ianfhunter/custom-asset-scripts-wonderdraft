@@ -106,5 +106,6 @@ venv.bak/
 trees/
 symbols/
 svg_output/
+templates/
 .pngprogress
 .svgprogress

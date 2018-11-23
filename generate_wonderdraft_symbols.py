@@ -11,16 +11,6 @@ from tqdm import tqdm
 from config import *
 
 def generateWonderDraftSymbols(args, gui=False):
-    # if platform.system() == 'Windows':
-    #     RASTER_ENGINE = 'INKSCAPE'
-    #     RASTER_ENGINE = 'SVGLIB'
-    #     RASTER_ENGINE = 'IMAGEMAGICK'
-    # else:
-    #     RASTER_ENGINE = 'CAIROSVG'
-    #     RASTER_ENGINE = 'RSVG'
-    #     # RASTER_ENGINE = 'CAIRO'
-    #     #RASTER_ENGINE = 'SVGLIB'
-
 
     createFolders()
 
@@ -35,6 +25,8 @@ def generateWonderDraftSymbols(args, gui=False):
     else:
         tqdm_out = None
 
+    if hasattr(args, 'folder'):
+        SYMBOL_DIR = TREE_DIR = args.folder
 
     if args.is_tree_mode:
 
@@ -57,7 +49,6 @@ def generateWonderDraftSymbols(args, gui=False):
 
     else:
         # Ensure the output directory exists
-
 
         files = getAllFilesInDir(".svg", SVG_DIR)
         for f in tqdm(files, file=tqdm_out):

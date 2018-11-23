@@ -67,6 +67,12 @@ def genWonderDraftUI():
 
     return args
 
+def cityMapUI():
+    import argparse
+    parser = argparse.ArgumentParser()
+    args = parser.parse_args()
+    return args
+    
 
 def genSVGUI():
     import argparse

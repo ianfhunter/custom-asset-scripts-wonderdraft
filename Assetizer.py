@@ -10,11 +10,11 @@ from user_interface import selectEngine, initEngineSupport, getEngineSpecs
 import os
 import re
 
-
 ss.PYFORMS_STYLESHEET = 'style.css'
 
 from generate_svgs import generateSVGs
 from generate_wonderdraft_symbols import generateWonderDraftSymbols
+from convertMap import convertMap
 from pyforms import start_app
 
 from PyQt5 import QtCore, QtGui
@@ -28,7 +28,8 @@ class ArgPasser:
                  tree_mode=True,
                  max_dim=-1,
                  engine=None,
-                 color_scheme=""
+                 file="",
+                 folder=""
                  ):
         initEngineSupport(self)
         if engine is None:
@@ -38,8 +39,8 @@ class ArgPasser:
         self.prefix = prefix
         self.is_tree_mode = tree_mode
         self.max_dim = max_dim
-        self.color_scheme = color_scheme
-
+        self.file = file
+        self.folder = folder
 
 class ProgessTrackerThread(QtCore.QThread):
 
@@ -73,20 +74,18 @@ class ProgessTrackerThread(QtCore.QThread):
         self.progressPercent.emit({"perc": 100, "complete":True})
 
         self.finished.emit()
-#        self.terminate()
 
-class wonderdraftGUI(BaseWidget):
+class mapImportGUI(BaseWidget):
 
     def __init__(self, *args, **kwargs):
-        super().__init__('Map Maker Accellerator - Wonderdraft PNG')
+        super().__init__('Map Maker Accellerator - City Formatter')
 
         #Definition of the forms fields
-        self._prefix = ControlText('File Prefix', value="~Currently Disabled~")
-        self._outputmaxdim = ControlNumber('Dimension Limit')
+        self._outputmaxdim = ControlNumber('Dimension Limit', minimum=0, maximum=2048)
         self._dimdisclaimer = ControlLabel('(Not applicable for some engines)')
+        self._mapfile = ControlFile('City Map File')
+        self._mapdisclaimer = ControlLabel('(Must be an SVG)')
 
-        self._quickmodebox  = ControlCheckBox('Quick Mode')
-        # self._engine = ControlList('Engine')
         self._engine = ControlCombo('Engine')
         initEngineSupport(ArgPasser())
 
@@ -95,11 +94,7 @@ class wonderdraftGUI(BaseWidget):
         for i, x in enumerate(supported_engines):
             self._engine.add_item(x.name, x)
 
-        self._mode = ControlCombo('Output Mode')
-        for i, x in enumerate(["Symbol", "Tree"]):
-            self._mode.add_item(x, i)
-
-        self._progress = ControlProgress('Coversion Progress')
+        self._progress = ControlProgress('Conversion Progress')
         self._runbutton  = ControlButton('Generate PNGs')
 
         self._runbutton.value = self.callFn
@@ -107,9 +102,9 @@ class wonderdraftGUI(BaseWidget):
         #Define the organization of the Form Controls
         self._formset = [
             # '_prefix',
+            ('_mapfile', '_mapdisclaimer'),
             ('_outputmaxdim', '_dimdisclaimer'),
             '_engine',
-            '_mode',
             '_progress',
             '_runbutton'
         ]
@@ -121,10 +116,74 @@ class wonderdraftGUI(BaseWidget):
             mdim = self._outputmaxdim.value
 
         a = ArgPasser(
-                prefix=self._prefix.value,
                 max_dim=mdim,
                 engine=self._engine.value,
-                tree_mode=self._mode.value == 1
+                file=self._mapfile.value
+            )
+
+        thread = ProgessTrackerThread(PROGRESS_TRACKER_MAP_TMP_FILE)
+        thread.progressPercent.connect(self.update_progress)
+        thread.start()
+
+        t1 = Thread(target=convertMap, args=(a, {'gui':True}))
+        t1.start()
+
+
+    def update_progress(self, data):
+        self._progress.min = 0
+        self._progress.max = 100
+        self._progress.value = data["perc"]
+        if "complete" in data:
+            self._progress.label = "Complete"
+
+class wonderdraftGUI(BaseWidget):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__('Map Maker Accellerator - Wonderdraft PNG')
+
+        #Definition of the forms fields
+        # self._prefix = ControlText('File Prefix', value="~Currently Disabled~")
+        self._target = ControlDir('Folder to Rasterize')
+        self._outputmaxdim = ControlNumber('Max Output Size', minimum=0, maximum=2048, default=800)
+        self._dimdisclaimer = ControlLabel('(Not applicable for some engines)')
+
+        self._engine = ControlCombo('Engine')
+        initEngineSupport(ArgPasser())
+
+        _, supported_engines, _ = getEngineSpecs()
+
+        for i, x in enumerate(supported_engines):
+            self._engine.add_item(x.name, x)
+
+        self._flatten  = ControlCheckBox("No subfolders")
+
+        self._progress = ControlProgress('Conversion Progress')
+        self._runbutton  = ControlButton('Generate PNGs')
+
+        self._runbutton.value = self.callFn
+
+        #Define the organization of the Form Controls
+        self._formset = [
+            # '_prefix',
+            '_target',
+            ('_outputmaxdim', '_dimdisclaimer'),
+            '_engine',
+            '_flatten',
+            '_progress',
+            '_runbutton'
+        ]
+
+    def callFn(self):
+
+        mdim = -1
+        if (self._outputmaxdim.value > 0):
+            mdim = self._outputmaxdim.value
+
+        a = ArgPasser(
+                folder=self._target.value,
+                max_dim=mdim,
+                tree_mode=not(self._flatten.value),
+                engine=self._engine.value,
             )
 
         thread = ProgessTrackerThread(PROGRESS_TRACKER_PNG_TMP_FILE)
@@ -175,7 +234,7 @@ class svgGUI(BaseWidget):
 
         a=ArgPasser(
             prefix=self._prefix.value,
-            color_scheme=self._color.value
+            file=self._color.value
         )
 
         thread = ProgessTrackerThread(PROGRESS_TRACKER_SVG_TMP_FILE)
@@ -193,9 +252,6 @@ class svgGUI(BaseWidget):
         if "complete" in data:
             self._progress.label = "Complete"
 
-
-
-
 class mainGUI(BaseWidget):
 
     def __init__(self, *args, **kwargs):
@@ -204,26 +260,29 @@ class mainGUI(BaseWidget):
 
         self._text1 = ControlLabel('Please read the Wiki on Github for usage information. In future we try to have tooltips.', readonly=True, enabled=False)
 
-        self._runbutton  = ControlButton('Color Scheme Applier')
-        self._runbutton2  = ControlButton('SVG Conversion for Wonderdraft')
+        self._runbutton  = ControlButton('Apply Themes for Trees + Other Brushes')
+        self._runbutton3  = ControlButton('Apply Themes for City Maps + Other Symbols')
+        self._runbutton2  = ControlButton('Convert for Wonderdraft')
 
         self._text2 = ControlLabel('Potential Future Options. We encourage your feedback on what to work on next!', readonly=True, enabled=False)
 
-        self._runbutton3  = ControlButton('Color Scheme Designer', enabled=False)
+
         self._runbutton4  = ControlButton('Symbol Extractor', enabled=False)
         self._runbutton5  = ControlButton('Brush Convertor', enabled=False)
-        self._runbutton6  = ControlButton('City Formatter', enabled=False)
+        self._runbutton6  = ControlButton('Color Scheme Designer', enabled=False)
 
         #Define the organization of the Form Controls
         self._formset = [
             '_text1',
-            ('_runbutton', '_runbutton2'),
+            ('_runbutton', '_runbutton3'),
+            '_runbutton2',
             '_text2',
-            ('_runbutton3', '_runbutton4', '_runbutton5', '_runbutton6')
+            ('_runbutton4', '_runbutton5', '_runbutton6')
         ]
 
         self._runbutton.value = self.launchSVG
         self._runbutton2.value = self.launchPNG
+        self._runbutton3.value = self.launchCity
 
     def launchSVG(self, btn):
         win = svgGUI()
@@ -233,9 +292,12 @@ class mainGUI(BaseWidget):
         win = wonderdraftGUI()
         win.parent = self
         win.show()
+    def launchCity(self, btn):
+        win = mapImportGUI()
+        win.parent = self
+        win.show()
 
 
 if __name__ == '__main__':
 
     start_app(mainGUI, geometry=(200, 200, 800, 200))
-    # start_app(wonderdraftGUI, geometry=(200, 200, 800, 200))
