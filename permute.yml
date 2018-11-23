@@ -1,0 +1,36 @@
+permute:
+  category1:
+    - "cf211b"
+    - "64c93f" 
+    - "4b90e5"
+
+themes:
+  Temperate_A:
+    category1:
+      - "#c9c832"
+      - "#a2a552"
+      - "#7f8534"
+
+  Temperate_B: 
+    category1:
+      - "#aec9b3"
+      - "#48a16f"
+      - "#287359"
+  
+  Cold_A:
+    category1:
+      - "#f7f9fb"
+      - "#c2dbdf"
+      - "#71a2a6"
+  
+  Cold_B:
+    category1:
+      - "8dfdff"
+      - "48b8ba"
+      - "07909f"
+
+  Autumn:
+    category1:
+      - "#f48b53"
+      - "#f9c00f"
+      - "#ae1543"
