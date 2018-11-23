@@ -1,0 +1,32 @@
+replace:
+  buildings: "#99948A"
+  water: "#67635C"
+
+themes:
+  tribal:
+    buildings: 
+      - "#8C1527"
+      - "#510410"
+      - "#6d3210"
+    water: "#15728C"
+
+  forest: 
+    buildings:
+      - "#1A8C15"
+      - "#3a6843"
+      - "#0d511a"
+    water: "#022a51"
+  
+  city:
+    buildings:
+      - "#A85117"
+      - "#824A25"
+      - "#825537"
+    water: "#00DBFF"
+  
+  unicorn:
+    buildings:
+      - "#C15DA8"
+      - "#FF82E1"
+      - "#FF5BD8"
+    water: "#6FE8E6"
